@@ -42,218 +42,324 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
+  /* Global background & text */
   .stApp {
-    background: #ffffff;
-    color: #000000;
-    font-family: 'Inter', sans-serif;
+    background-color: #080c14;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: #f1f5f9;
+    font-family: 'Plus Jakarta Sans', sans-serif;
   }
 
   /* Sidebar styling */
   section[data-testid="stSidebar"] {
-    background: #fafafa;
-    border-right: 1px solid #e5e7eb;
+    background: #0d1322 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
   }
   section[data-testid="stSidebar"] .stMarkdown h1,
   section[data-testid="stSidebar"] .stMarkdown h2,
   section[data-testid="stSidebar"] .stMarkdown h3 {
-    color: #000000 !important;
-    -webkit-text-fill-color: #000000 !important;
-    background: none !important;
+    color: #f8fafc !important;
+    -webkit-text-fill-color: #f8fafc !important;
     font-weight: 700;
   }
   section[data-testid="stSidebar"] p, section[data-testid="stSidebar"] label {
-    color: #333333 !important;
+    color: #94a3b8 !important;
   }
 
-  /* Headings */
-  .main h1 {
-    color: #000000;
-    font-weight: 800;
-    letter-spacing: -1px;
-    font-size: 2.5rem !important;
+  /* Typography */
+  h1, h2, h3, h4 {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    letter-spacing: -0.02em;
+    color: #ffffff;
   }
-  .main h2, .main h3, .main h4 {
-    color: #000000;
-    font-weight: 700;
-  }
-
-  /* General Text */
+  
   .main p, .main span, .main div {
-    color: #1a1a1a;
+    color: #cbd5e1;
   }
 
-  /* Cards */
+  /* Hero Banner */
+  .hero-container {
+    text-align: center;
+    padding: 2rem 1rem 1rem 1rem;
+    margin-bottom: 1rem;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    color: #a5b4fc;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.2);
+  }
+  .hero-title {
+    font-size: 3.2rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -1.5px !important;
+    line-height: 1.15 !important;
+    background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 50%, #e0e7ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.8rem !important;
+  }
+  .hero-subtitle {
+    color: #94a3b8 !important;
+    font-size: 1.15rem !important;
+    max-width: 780px;
+    margin: 0 auto !important;
+    line-height: 1.6 !important;
+    font-weight: 400;
+  }
+
+  /* Status Bar */
+  .status-bar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 9999px;
+    padding: 10px 24px;
+    margin: 1.5rem auto 2.5rem auto;
+    max-width: 950px;
+    flex-wrap: wrap;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+  .status-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: #cbd5e1;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+  }
+  .status-dot-active {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 10px #10b981;
+    animation: pulse-green 2s infinite ease-in-out;
+  }
+  @keyframes pulse-green {
+    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 10px #10b981; }
+    50% { opacity: 0.5; transform: scale(0.85); box-shadow: 0 0 3px #10b981; }
+  }
+
+  /* Glass Cards */
   .glass-card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
+    background: rgba(17, 24, 39, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
     padding: 24px;
-    margin: 12px 0;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    transition: box-shadow 0.2s ease;
+    margin: 14px 0;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .glass-card:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: rgba(99, 102, 241, 0.35);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.15);
+    transform: translateY(-2px);
   }
 
   /* Mode badge */
   .mode-badge {
     display: inline-block;
     padding: 6px 16px;
-    border-radius: 4px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    letter-spacing: 0.5px;
-    margin: 4px 0;
-    border: 1px solid #000000;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.8px;
+    margin: 8px 0;
+    text-transform: uppercase;
   }
-  .mode-full { background: #000000; color: #ffffff; }
-  .mode-partial { background: #ffffff; color: #000000; border-color: #000000; }
-  .mode-guidance { background: #f3f4f6; color: #000000; border-color: #d1d5db; }
-
-  /* Status bar */
-  .status-bar {
-    display: flex;
-    gap: 16px;
-    background: #fafafa;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    padding: 12px 20px;
-    margin: 16px 0;
-    flex-wrap: wrap;
+  .mode-full {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.25));
+    color: #c7d2fe;
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
   }
-  .status-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.85rem;
-    color: #374151;
-    font-weight: 500;
+  .mode-partial {
+    background: rgba(234, 179, 8, 0.15);
+    color: #fde047;
+    border: 1px solid rgba(234, 179, 8, 0.35);
   }
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #000000;
+  .mode-guidance {
+    background: rgba(148, 163, 184, 0.15);
+    color: #cbd5e1;
+    border: 1px solid rgba(148, 163, 184, 0.3);
   }
 
-  /* Score gauge */
+  /* Score Gauge Cards */
   .score-gauge {
     text-align: center;
-    padding: 12px;
+    padding: 16px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    transition: all 0.25s ease;
+  }
+  .score-gauge:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-2px);
   }
   .score-value {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     font-weight: 800;
     line-height: 1;
-    color: #000000 !important;
+    font-family: 'JetBrains Mono', monospace;
   }
   .score-label {
-    font-size: 0.85rem;
-    color: #4b5563;
-    margin-top: 4px;
+    font-size: 0.82rem;
+    color: #94a3b8;
+    margin-top: 6px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Dynamic Score Colors */
+  .score-green {
+    color: #34d399 !important;
+    text-shadow: 0 0 16px rgba(52, 211, 153, 0.45);
+  }
+  .score-yellow {
+    color: #fbbf24 !important;
+    text-shadow: 0 0 16px rgba(251, 191, 36, 0.45);
+  }
+  .score-red {
+    color: #f87171 !important;
+    text-shadow: 0 0 16px rgba(248, 113, 113, 0.45);
   }
 
   /* Roadmap steps */
   .roadmap-step {
-    background: #ffffff;
-    border-left: 4px solid #000000;
-    border-radius: 0 6px 6px 0;
-    padding: 16px 20px;
-    margin: 8px 0;
-    border-top: 1px solid #e5e7eb;
-    border-right: 1px solid #e5e7eb;
-    border-bottom: 1px solid #e5e7eb;
+    background: rgba(17, 24, 39, 0.7);
+    border-left: 4px solid #6366f1;
+    border-radius: 0 10px 10px 0;
+    padding: 18px 22px;
+    margin: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.2s ease;
   }
-  .roadmap-beginner { border-left-color: #000000; }
-  .roadmap-intermediate { border-left-color: #666666; }
-  .roadmap-advanced { border-left-color: #cccccc; }
+  .roadmap-step:hover {
+    background: rgba(17, 24, 39, 0.9);
+    transform: translateX(4px);
+  }
+  .roadmap-beginner { border-left-color: #10b981; }
+  .roadmap-intermediate { border-left-color: #6366f1; }
+  .roadmap-advanced { border-left-color: #a855f7; }
 
   /* Metric cards override */
   [data-testid="stMetric"] {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    background: rgba(17, 24, 39, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px !important;
+    padding: 16px 20px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
   }
   [data-testid="stMetricValue"] {
-    color: #000000 !important;
+    color: #f8fafc !important;
+    font-weight: 700 !important;
   }
   [data-testid="stMetricLabel"] {
-    color: #4b5563 !important;
+    color: #94a3b8 !important;
     font-weight: 600 !important;
+    font-size: 0.85rem !important;
   }
 
   /* Tab styling */
   .stTabs [data-baseweb="tab-list"] {
     gap: 8px;
-    border-bottom: 2px solid #e5e7eb;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 4px;
   }
   .stTabs [data-baseweb="tab"] {
     background: transparent;
     border: none;
-    color: #6b7280;
+    color: #94a3b8;
     font-weight: 600;
-  }
-  .stTabs [aria-selected="true"] {
-    background: transparent;
-    color: #000000;
-    border-bottom: 2px solid #000000;
-  }
-
-  /* Button styling */
-  .stButton button[kind="primary"] {
-    background: #000000;
-    border: 1px solid #000000;
-    color: #ffffff;
-    font-weight: 600;
-    border-radius: 6px;
-    padding: 12px;
+    font-size: 0.95rem;
+    padding: 10px 18px;
+    border-radius: 8px;
     transition: all 0.2s ease;
   }
-  .stButton button[kind="primary"]:hover {
-    background: #333333;
-    border-color: #333333;
+  .stTabs [data-baseweb="tab"]:hover {
     color: #ffffff;
+    background: rgba(255, 255, 255, 0.04);
   }
-  .stButton button[kind="secondary"] {
-    background: #ffffff;
-    border: 1px solid #d1d5db;
-    color: #000000;
-    border-radius: 6px;
-  }
-  .stButton button[kind="secondary"]:hover {
-    border-color: #000000;
-    color: #000000;
+  .stTabs [aria-selected="true"] {
+    background: rgba(99, 102, 241, 0.15) !important;
+    color: #a5b4fc !important;
+    border-bottom: 2px solid #6366f1 !important;
   }
 
-  /* Input fields enhancements */
-  .stTextInput input, .stTextArea textarea, [data-testid="stFileUploaderDropzone"] {
-    background: #ffffff !important;
-    border: 1px solid #d1d5db !important;
-    border-radius: 6px !important;
-    color: #000000 !important;
+  /* Primary Button Styling */
+  div.stButton > button[kind="primary"],
+  div.stButton > button {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #9333ea 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    border-radius: 12px !important;
+    padding: 0.85rem 2rem !important;
+    box-shadow: 0 0 25px rgba(124, 58, 237, 0.4), 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  div.stButton > button:hover {
+    transform: translateY(-2px) scale(1.01) !important;
+    box-shadow: 0 0 35px rgba(124, 58, 237, 0.65), 0 8px 20px rgba(0, 0, 0, 0.4) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+
+  /* Input fields */
+  .stTextInput input, .stTextArea textarea {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 10px !important;
+    color: #f8fafc !important;
     transition: all 0.2s ease !important;
   }
-  .stTextInput input:focus, .stTextArea textarea:focus, [data-testid="stFileUploaderDropzone"]:hover {
-    border-color: #000000 !important;
-    box-shadow: 0 0 0 1px #000000 !important;
+  .stTextInput input:focus, .stTextArea textarea:focus {
+    border-color: #818cf8 !important;
+    box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.25) !important;
+    background: rgba(15, 23, 42, 0.8) !important;
+  }
+  [data-testid="stFileUploaderDropzone"] {
+    background: rgba(15, 23, 42, 0.45) !important;
+    border: 2px dashed rgba(255, 255, 255, 0.15) !important;
+    border-radius: 12px !important;
+    transition: all 0.25s ease !important;
+  }
+  [data-testid="stFileUploaderDropzone"]:hover {
+    border-color: #818cf8 !important;
+    background: rgba(99, 102, 241, 0.08) !important;
   }
   
-  /* Enhance the label text under inputs */
   .stTextInput label, .stTextArea label, [data-testid="stFileUploaderDropzone"] label {
-    color: #374151 !important;
+    color: #cbd5e1 !important;
     font-weight: 600 !important;
   }
-
-  /* Remove score colors and make them black/gray */
-  .score-green { color: #000000; }
-  .score-yellow { color: #666666; }
-  .score-red { color: #999999; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -262,16 +368,21 @@ st.markdown("""
 # Header + System Status Bar
 # ---------------------------------------------------------------------------
 
-st.title(" MoSSGA System")
-st.markdown("##### Multi-Modal Semantic Skill Gap Analysis · Powered by Sentence-BERT & Multi-Modal Fusion")
+st.markdown("""
+<div class="hero-container">
+  <div class="hero-badge">⚡ AI-POWERED TALENT INTELLIGENCE</div>
+  <h1 class="hero-title">MoSSGA System</h1>
+  <p class="hero-subtitle">Multi-Modal Semantic Skill Gap Analysis · Sentence-BERT Embeddings & Cross-Modal Fusion</p>
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("""
 <div class="status-bar">
-  <div class="status-item"><div class="status-dot"></div> SBERT Model Active</div>
-  <div class="status-item"><div class="status-dot"></div> NLP Pipeline Ready</div>
-  <div class="status-item"><div class="status-dot"></div> GitHub Analyzer Active</div>
-  <div class="status-item"><div class="status-dot"></div> Fusion Engine Ready</div>
-  <div class="status-item"><div class="status-dot"></div> Skill Gap Engine Online</div>
+  <div class="status-item"><div class="status-dot-active"></div> SBERT Model Active</div>
+  <div class="status-item"><div class="status-dot-active"></div> NLP Pipeline Ready</div>
+  <div class="status-item"><div class="status-dot-active"></div> GitHub Analyzer Active</div>
+  <div class="status-item"><div class="status-dot-active"></div> Fusion Engine Ready</div>
+  <div class="status-item"><div class="status-dot-active"></div> Skill Gap Engine Online</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -280,67 +391,49 @@ st.markdown("""
 # MoSSGA Hero Input Engine
 # ---------------------------------------------------------------------------
 
-st.markdown("""
-<div class="glass-card" style="text-align: center; margin-bottom: 2rem;">
-  <h2>Elevate Your Career Intelligence</h2>
-  <p style="color: #94a3b8; font-size: 1.1rem;">Provide your multi-modal profile data to uncover deep semantic skill gaps and career progression steps.</p>
-</div>
-""", unsafe_allow_html=True)
-
 col1, col2, col3 = st.columns(3)
 
 with col1:
-  st.markdown("### Resume Upload")
+  st.markdown("### 📄 Resume Upload")
   uploaded_files = st.file_uploader(
     "Upload PDF / DOCX resumes", type=["pdf", "docx"], accept_multiple_files=True,
     label_visibility="collapsed",
   )
   if uploaded_files:
-    st.success(f" {len(uploaded_files)} resume(s) loaded")
+    st.success(f"✓ {len(uploaded_files)} resume(s) loaded")
 
 with col2:
-  st.markdown("### GitHub Profile")
+  st.markdown("### 🐙 GitHub Profile")
   github_input = st.text_input(
     "GitHub URL or Username",
-    placeholder="e.g. https://github.com/username or just username"
+    placeholder="e.g. https://github.com/username or username"
   )
   if github_input:
-    st.success(" GitHub profile will be analyzed")
+    st.success("✓ GitHub profile queued for analysis")
 
 with col3:
-  st.markdown("### Target Profile")
-  target_role = st.text_input("Target Role", placeholder="e.g. Data Scientist, Web Developer")
+  st.markdown("### 🎯 Target Profile")
+  target_role = st.text_input("Target Role", placeholder="e.g. Machine Learning Engineer")
   manual_skills = st.text_input(
     "Your Skills (comma separated)",
-    placeholder="e.g. Python, SQL, React"
+    placeholder="e.g. Python, SQL, Docker"
   )
 
-st.markdown("---")
-st.markdown("<h3 style='text-align: center;'> Job Description Analysis</h3>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("### 📋 Target Job Description")
 jd_input = st.text_area(
   "Paste Target Job Description here", 
-  height=150, 
-  placeholder="Paste a job description to get deep semantic skill gap matching... (Optional but highly recommended)",
+  height=140, 
+  placeholder="Paste a job description to get deep semantic skill gap matching and explainable AI insights...",
   label_visibility="collapsed"
 )
 
-st.markdown("---")
+st.markdown("<br>", unsafe_allow_html=True)
 col_cfg1, col_cfg2, col_cfg3 = st.columns([1, 2, 1])
 with col_cfg2:
   use_sbert = st.checkbox("Use Deep Semantic (SBERT) for advanced pattern matching", value=True)
-  st.markdown(
-    """
-    <style>
-    div.stButton > button {
-      transform: scale(1.02);
-      font-size: 1.25rem;
-      padding: 0.8rem 2rem;
-      margin-top: 10px;
-    }
-    </style>
-    """, unsafe_allow_html=True
-  )
-  run_btn = st.button(" Enhance Form & Run MoSSGA Analysis", use_container_width=True, type="primary")
+  run_btn = st.button("🚀 Run Multi-Modal Skill Gap Analysis", use_container_width=True, type="primary")
+
 
 
 # ---------------------------------------------------------------------------
@@ -476,11 +569,11 @@ if run_btn:
   # ===================================================================
 
   tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    " Analysis Results",
-    " GitHub Analysis",
-    " Multi-Modal Fusion",
-    " MoSSGA Skill Gap",
-    " Recommendations",
+    "📊 Analysis Results",
+    "🐙 GitHub Analysis",
+    "🧬 Multi-Modal Fusion",
+    "🎯 MoSSGA Skill Gap",
+    "💡 Recommendations",
   ])
 
   # --- TAB 1: Analysis Results ---
@@ -614,7 +707,14 @@ if run_btn:
             color="Percentage", color_continuous_scale="Viridis",
             title="Top Languages by Code Volume",
           )
-          fig_lang.update_layout(template="plotly_dark", height=350)
+          fig_lang.update_layout(
+            template="plotly_dark",
+            height=360,
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            font=dict(family='Plus Jakarta Sans', color='#94a3b8'),
+            margin=dict(l=20, r=20, t=40, b=20),
+          )
           st.plotly_chart(fig_lang, use_container_width=True)
 
         # Skills from GitHub
@@ -740,7 +840,14 @@ if run_btn:
           color_discrete_map={"Both": "#22c55e", "Resume": "#6366f1", "GitHub": "#eab308"},
           title="Skill Confidence Scores (Multi-Modal)",
         )
-        fig_conf.update_layout(template="plotly_dark", height=400)
+        fig_conf.update_layout(
+          template="plotly_dark",
+          height=400,
+          paper_bgcolor='rgba(0,0,0,0)',
+          plot_bgcolor='rgba(0,0,0,0)',
+          font=dict(family='Plus Jakarta Sans', color='#94a3b8'),
+          margin=dict(l=20, r=20, t=40, b=20),
+        )
         st.plotly_chart(fig_conf, use_container_width=True)
     else:
       st.markdown("""
@@ -870,9 +977,15 @@ if run_btn:
           textfont=dict(size=9),
         ))
         fig_heat.update_layout(
-          template='plotly_dark', height=500,
+          template='plotly_dark',
+          height=500,
+          paper_bgcolor='rgba(0,0,0,0)',
+          plot_bgcolor='rgba(0,0,0,0)',
+          font=dict(family='Plus Jakarta Sans', color='#94a3b8'),
+          margin=dict(l=20, r=20, t=50, b=20),
           title='JD Skills vs Candidate Skills — Semantic Similarity',
-          xaxis_title='Candidate Skills', yaxis_title='JD Required Skills',
+          xaxis_title='Candidate Skills',
+          yaxis_title='JD Required Skills',
         )
         st.plotly_chart(fig_heat, use_container_width=True)
 
