@@ -7,8 +7,8 @@ and practical skills for multi-modal fusion with resume data.
 """
 from __future__ import annotations
 
-
 import logging
+import os
 import re
 from collections import defaultdict
 
@@ -16,8 +16,14 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-# GitHub REST API base URL (unauthenticated, rate-limited to 60 req/hr)
+# Suppress HuggingFace symlinks warning on Windows
+os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
+
+# GitHub REST API base URL
 GITHUB_API = "https://api.github.com"
+
+# Optional: set GITHUB_TOKEN env var to raise rate limit from 60 to 5000 req/hr
+_GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 
 # Map GitHub-reported languages to standardised skill names
 LANGUAGE_SKILL_MAP = {
@@ -163,15 +169,19 @@ def _extract_username(github_input: str) -> str:
 
 def _fetch_json(url: str, params: dict = None) -> dict | list | None:
     """Makes a GET request and returns parsed JSON, or None on failure."""
+    headers = {
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "MoSSGA-SkillAnalyzer/1.0",
+    }
+    if _GITHUB_TOKEN:
+        headers["Authorization"] = f"token {_GITHUB_TOKEN}"
+
     try:
-        resp = requests.get(url, params=params, timeout=10, headers={
-            "Accept": "application/vnd.github.v3+json",
-            "User-Agent": "MoSSGA-SkillAnalyzer/1.0",
-        })
+        resp = requests.get(url, params=params, timeout=10, headers=headers)
         if resp.status_code == 200:
             return resp.json()
         elif resp.status_code == 403:
-            logger.warning("GitHub API rate-limit hit (403). Try again later.")
+            logger.warning("GitHub API rate-limit hit (403). Try again later or set GITHUB_TOKEN env var.")
             return None
         elif resp.status_code == 404:
             logger.warning("GitHub user/resource not found (404).")

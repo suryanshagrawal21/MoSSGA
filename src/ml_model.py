@@ -44,8 +44,10 @@ class SkillGapMLModel:
         self.model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=50, max_depth=3)
         self.model.fit(X_train, Y_train)
         
-        # Make sure data directory exists
-        os.makedirs(os.path.dirname(self.model_path), exist_ok=True)
+        # Make sure data directory exists (guard against empty dirname)
+        model_dir = os.path.dirname(self.model_path)
+        if model_dir:
+            os.makedirs(model_dir, exist_ok=True)
         try:
             with open(self.model_path, 'wb') as f:
                 pickle.dump(self.model, f)

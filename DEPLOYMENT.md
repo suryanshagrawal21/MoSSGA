@@ -1,34 +1,96 @@
-# Deployment Guide: MoSSGA Hybrid System
+# MoSSGA — Deployment Guide
 
-Because this application is a modern, modular, production-ready system consisting of a **React Frontend** and a **FastAPI Backend**, deployment requires two steps. We recommend **Render.com** for the backend and **Vercel** for the frontend.
+## Run Locally
 
-## Step 1: Deploy the Backend (FastAPI) on Render
-Render is perfect for Python APIs.
+```bash
+# 1. Install dependencies
+pip install -r requirements.txt
 
-1. Go to [Render.com](https://render.com) and create a new **Web Service**.
-2. Connect your GitHub repository: `Intelligent_AI_Resume_Screening_System`.
-3. Fill out the deployment details:
-   - **Name**: `mossga-api` (or whatever you prefer).
-   - **Environment**: Python
-   - **Build Command**: `pip install -r requirements.txt && python -m spacy download en_core_web_sm`
-   - **Start Command**: `uvicorn api.main:app --host 0.0.0.0 --port $PORT`
-4. Click **Create Web Service**. 
-5. Wait for the build to finish. Once it says "Live", copy the resulting URL (e.g., `https://mossga-api.onrender.com`).
+# 2. Download spaCy model (one-time)
+python -m spacy download en_core_web_sm
+
+# 3. (Optional) Create .env file for GitHub token
+copy .env.example .env
+# Edit .env and add your GITHUB_TOKEN
+
+# 4. Run the app
+streamlit run app.py
+```
+
+Open http://localhost:8501 in your browser.
 
 ---
 
-## Step 2: Deploy the Frontend (React) on Vercel
-Vercel is the easiest global CDN for modern React applications.
+## Option 1: Streamlit Cloud (Recommended — Free & Easiest)
 
-1. Go to [Vercel.com](https://vercel.com) and create a **New Project**.
-2. Import the `Intelligent_AI_Resume_Screening_System` repository from GitHub.
-3. **CRITICAL STEP: Configure the Project**:
-   - In the **Root Directory** section, click Edit and select `frontend`.
-   - The Framework Preset should automatically detect "Vite".
-4. **Environment Variables**:
-   - Add a new variable named `VITE_API_URL`.
-   - For the Value, paste the URL you got from Render in Step 1 (e.g., `https://mossga-api.onrender.com`). **Do not put a trailing slash!**
-5. Click **Deploy**.
+**Best for:** Quick sharing, demos, public apps.
 
-## Conclusion
-Once Vercel finishes deploying, they will provide you the final live URL! Your professional frontend will be hosted on Vercel, securely calling your heavy AI calculations over on Render.
+1. Push your repo to GitHub
+2. Go to [share.streamlit.io](https://share.streamlit.io) ? Sign in with GitHub
+3. Click **New app** ? Select your repo ? Set **Main file path** to `app.py`
+4. (Optional) Under **Advanced settings ? Secrets**, add:
+   ```
+   GITHUB_TOKEN = "your_github_personal_access_token"
+   ```
+5. Click **Deploy** — done! ?
+
+> **Note:** Streamlit Cloud automatically runs `pip install -r requirements.txt`.
+> The spaCy model is downloaded at first startup via the fallback in `preprocessing.py`.
+
+---
+
+## Option 2: Render.com (Free tier, full control)
+
+**Best for:** Production APIs, always-on apps.
+
+1. Go to [render.com](https://render.com) ? New ? **Web Service**
+2. Connect your GitHub repository
+3. Configure:
+   - **Environment:** Python
+   - **Build Command:** `pip install -r requirements.txt && python -m spacy download en_core_web_sm`
+   - **Start Command:** `streamlit run app.py --server.port $PORT --server.address 0.0.0.0`
+4. Under **Environment Variables**, add (optional):
+   - `GITHUB_TOKEN` = your token
+   - `HF_HUB_DISABLE_SYMLINKS_WARNING` = `1`
+5. Click **Create Web Service** ?
+
+---
+
+## Option 3: Railway.app
+
+1. Go to [railway.app](https://railway.app) ? New Project ? Deploy from GitHub
+2. Add environment variables:
+   - `GITHUB_TOKEN` (optional)
+3. Railway auto-detects the `Procfile` — done! ?
+
+---
+
+## Option 4: Heroku
+
+1. Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+2. Run:
+   ```bash
+   heroku create mossga-app
+   git push heroku main
+   ```
+3. Add buildpacks if needed:
+   ```bash
+   heroku buildpacks:add heroku/python
+   ```
+
+---
+
+## Environment Variables Reference
+
+| Variable | Required | Description |
+|---|---|---|
+| `GITHUB_TOKEN` | Optional | GitHub Personal Access Token — raises API limit from 60 to 5000 req/hr |
+| `HF_HUB_DISABLE_SYMLINKS_WARNING` | Optional | Set to `1` to suppress HuggingFace symlinks warning on Windows |
+
+---
+
+## Notes
+
+- The **SBERT model** (`all-MiniLM-L6-v2`, ~90MB) is downloaded automatically on first run and cached.
+- The **XGBoost ML model** (`data/ml_model.pkl`) is auto-generated at first startup with synthetic training data.
+- The `spaCy` model (`en_core_web_sm`) must be explicitly downloaded via `python -m spacy download en_core_web_sm`.

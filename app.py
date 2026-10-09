@@ -31,7 +31,7 @@ from src.career_intelligence import (
 
 st.set_page_config(
   page_title="MoSSGA — Multi-Modal Semantic Skill Gap Analysis",
-  page_icon="",
+  page_icon="🎯",
   layout="wide",
   initial_sidebar_state="expanded",
 )
@@ -560,8 +560,9 @@ if run_btn:
     if has_resumes and has_jd and resume_text_first:
       st.markdown("### Similarity Scores")
       cleaned = preprocess_text(clean_text(resume_text_first))
-      tfidf_score = calculate_similarity([cleaned], jd_processed)[0]
-      sbert_score = calculate_sbert_similarity([cleaned], jd_processed)[0] if use_sbert else 0
+      jd_proc = preprocess_text(clean_text(jd_input))
+      tfidf_score = calculate_similarity([cleaned], jd_proc)[0]
+      sbert_score = calculate_sbert_similarity([cleaned], jd_proc)[0] if use_sbert else 0
 
       sc1, sc2 = st.columns(2)
       sc1.metric("TF-IDF Cosine Similarity", f"{tfidf_score:.4f}")

@@ -1,4 +1,8 @@
 import logging
+import os
+
+# Suppress HuggingFace symlinks warning on Windows before any HF imports
+os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
 
 import numpy as np
 import pandas as pd

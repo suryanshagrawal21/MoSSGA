@@ -41,3 +41,17 @@ wheels/
 # OS
 .DS_Store
 Thumbs.db
+
+# ML model artifacts (auto-generated at runtime, do not commit)
+data/ml_model.pkl
+*.pkl
+*.joblib
+
+# HuggingFace model cache
+.cache/
+
+# Streamlit cache
+.streamlit/cache/
+
+# Temp upload files
+*.tmp

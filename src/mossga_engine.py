@@ -349,9 +349,8 @@ def run_mossga_pipeline(
             report["github_analysis"] = {"status": "failed", "skills": []}
 
     # ── Step 3: Multi-Modal Fusion ──────────────────────────────
-    all_skills = resume_skills if not github_skills else (
-        github_skills if not resume_skills else resume_skills
-    )
+    # Default all_skills to union of both sources before fusion
+    all_skills = list(set(resume_skills + github_skills))
 
     if resume_skills or github_skills:
         fusion = fuse_skill_profiles(resume_skills, github_skills)
