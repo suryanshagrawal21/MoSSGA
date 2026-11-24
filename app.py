@@ -44,13 +44,13 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-  /* ── Global ─────────────────────────────────────────── */
+  /* ── Global Reset ─────────────────────────────────────── */
   html, body, .stApp {
-    background: #080b14 !important;
-    color: #e2e8f0 !important;
-    font-family: 'Inter', sans-serif !important;
+    background: #f6f4fb !important;
+    color: #1a1523 !important;
+    font-family: 'Inter', 'Plus Jakarta Sans', sans-serif !important;
   }
   .block-container {
     padding-top: 0.5rem !important;
@@ -58,812 +58,489 @@ st.markdown("""
     max-width: 1400px !important;
   }
 
-  /* ── Sidebar ───────────────────────────────────────── */
+  /* Fix stray Streamlit white boxes */
+  .stApp > header { background: transparent !important; }
+  div[data-testid="stDecoration"] { display: none !important; }
+
+  /* ── Sidebar ───────────────────────────────────────────── */
   section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0d1117 0%, #0a0f1e 100%) !important;
-    border-right: 1px solid rgba(99,102,241,0.15) !important;
+    background: #ffffff !important;
+    border-right: 1px solid #e8e0f0 !important;
+  }
+  section[data-testid="stSidebar"] * {
+    color: #1a1523 !important;
   }
   section[data-testid="stSidebar"] .stMarkdown h1,
   section[data-testid="stSidebar"] .stMarkdown h2,
   section[data-testid="stSidebar"] .stMarkdown h3,
   section[data-testid="stSidebar"] .stMarkdown h4 {
-    color: #e2e8f0 !important;
-    font-family: 'Space Grotesk', sans-serif !important;
+    color: #1a1523 !important;
     font-weight: 700 !important;
   }
   section[data-testid="stSidebar"] p,
   section[data-testid="stSidebar"] label,
-  section[data-testid="stSidebar"] .stCaption { color: #94a3b8 !important; }
-  section[data-testid="stSidebar"] hr { border-color: rgba(99,102,241,0.2) !important; }
+  section[data-testid="stSidebar"] span,
+  section[data-testid="stSidebar"] .stCaption { color: #6b6578 !important; }
+  section[data-testid="stSidebar"] hr { border-color: #e8e0f0 !important; }
 
-  /* ── Typography ─────────────────────────────────────── */
-  h1, h2, h3, h4, h5 {
-    font-family: 'Space Grotesk', sans-serif !important;
-    letter-spacing: -0.02em !important;
-    color: #f1f5f9 !important;
-  }
-  .main p, .main span, .main li { color: #94a3b8 !important; }
-
-  /* ── Navbar ─────────────────────────────────────────── */
-  .mossga-navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(13,17,23,0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(99,102,241,0.2);
-    border-radius: 16px;
-    padding: 12px 24px;
-    margin: 0 0 1.5rem 0;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-  }
-  .nav-brand { display:flex; align-items:center; gap:14px; }
-  .brand-logo-mark {
-    width: 36px; height: 36px;
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-    border-radius: 10px;
-    display: flex; align-items:center; justify-content:center;
-    font-weight: 900; font-size: 1.1rem;
-    box-shadow: 0 0 20px rgba(99,102,241,0.4);
-  }
-  .brand-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.2rem; font-weight: 800;
-    color: #f1f5f9; letter-spacing: -0.03em;
-  }
-  .brand-badge {
-    background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(168,85,247,0.2));
-    border: 1px solid rgba(99,102,241,0.4);
-    color: #a5b4fc; font-size: 0.65rem; font-weight: 700;
-    padding: 2px 8px; border-radius: 9999px;
-    letter-spacing: 0.8px; text-transform: uppercase;
-    margin-left: 8px; vertical-align: middle;
-  }
-  .brand-sub { font-size: 0.77rem; color: #64748b; display: block; }
-  .nav-right { display:flex; align-items:center; gap:12px; }
-  .status-live {
-    display:flex; align-items:center; gap:7px;
-    background: rgba(16,185,129,0.1);
-    border: 1px solid rgba(16,185,129,0.25);
-    color: #34d399; font-size: 0.78rem; font-weight: 600;
-    padding: 6px 14px; border-radius: 9999px;
-  }
-  .pulse-dot {
-    width:8px; height:8px; border-radius:50%;
-    background:#10b981;
-    animation: pulse-anim 2s ease-in-out infinite;
-    box-shadow: 0 0 8px rgba(16,185,129,0.6);
-  }
-  @keyframes pulse-anim {
-    0%,100% { opacity:1; transform:scale(1); }
-    50% { opacity:0.6; transform:scale(0.85); }
-  }
-  .nav-gh-btn {
-    display:inline-flex; align-items:center; gap:6px;
-    background: rgba(99,102,241,0.1);
-    border: 1px solid rgba(99,102,241,0.3);
-    color: #a5b4fc !important; text-decoration:none !important;
-    font-size: 0.82rem; font-weight: 600;
-    padding: 6px 16px; border-radius: 9999px;
-    transition: all 0.25s ease;
-  }
-  .nav-gh-btn:hover {
-    background: rgba(99,102,241,0.2);
-    color: #c7d2fe !important;
-    transform: translateY(-1px);
-  }
-
-  /* ── Navigation Pills ───────────────────────────────── */
-  div[data-testid="stRadio"] {
-    display:flex; justify-content:center;
-    margin: 0 auto 2rem auto;
-  }
-  div[data-testid="stRadio"] > div {
-    background: rgba(13,17,23,0.9) !important;
-    border: 1px solid rgba(99,102,241,0.2) !important;
-    border-radius: 14px !important;
-    padding: 5px !important; gap: 3px !important;
-    flex-direction: row !important;
-    justify-content: center !important;
-    backdrop-filter: blur(12px);
-  }
-  div[data-testid="stRadio"] label {
-    background: transparent !important;
-    border-radius: 10px !important;
-    padding: 8px 22px !important; margin: 0 !important;
-    font-weight: 500 !important; font-size: 0.87rem !important;
-    cursor: pointer !important; transition: all 0.2s ease !important;
-    color: #64748b !important; border: none !important;
-  }
-  div[data-testid="stRadio"] label:hover {
-    color: #cbd5e1 !important;
-    background: rgba(99,102,241,0.08) !important;
-  }
-  div[data-testid="stRadio"] label:has(input:checked) {
-    background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(168,85,247,0.2)) !important;
-    color: #a5b4fc !important;
-    box-shadow: 0 2px 12px rgba(99,102,241,0.2) !important;
-    font-weight: 700 !important;
-    border: 1px solid rgba(99,102,241,0.3) !important;
-  }
-  div[data-testid="stRadio"] label div[data-testid="stMarkdownContainer"] p {
-    color: inherit !important; font-weight: inherit !important; margin: 0 !important;
-  }
-  div[data-testid="stRadio"] input[type="radio"] { display: none !important; }
-
-  /* ── Glass Cards ─────────────────────────────────────── */
-  .glass-card {
-    background: rgba(15,20,35,0.7);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(99,102,241,0.12);
-    border-radius: 16px; padding: 24px; margin: 12px 0;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
-  }
-  .glass-card:hover {
-    border-color: rgba(99,102,241,0.25);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    transform: translateY(-1px);
-  }
-
-  /* ── Hero ───────────────────────────────────────────── */
-  .hero-wrap {
-    position: relative; padding: 2rem 0 1.5rem 0;
-    margin-bottom: 1.5rem; overflow: hidden;
-  }
-  .hero-wrap::before {
-    content: ''; position: absolute;
-    top: -60px; left: -60px; width: 320px; height: 320px;
-    background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-chip {
-    display:inline-flex; align-items:center; gap:7px;
-    background: rgba(99,102,241,0.12);
-    border: 1px solid rgba(99,102,241,0.25);
-    color: #a5b4fc; font-size: 0.75rem; font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase;
-    padding: 5px 14px; border-radius: 9999px; margin-bottom: 1rem;
-  }
-  .hero-title {
-    font-family: 'Space Grotesk', sans-serif !important;
-    font-size: 3.2rem !important; font-weight: 800 !important;
-    letter-spacing: -0.04em !important; line-height: 1.12 !important;
-    background: linear-gradient(135deg, #f1f5f9 0%, #a5b4fc 50%, #c084fc 100%) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
-    margin-bottom: 1rem !important;
-  }
-  .hero-sub {
-    color: #64748b !important; font-size: 1.05rem !important;
-    line-height: 1.65 !important; max-width: 680px; font-weight: 400;
-  }
-
-  /* ── Status Bar ─────────────────────────────────────── */
-  .status-bar { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:1.8rem; }
-  .status-pill {
-    display:flex; align-items:center; gap:6px;
-    background: rgba(16,185,129,0.08);
-    border: 1px solid rgba(16,185,129,0.2);
-    color: #6ee7b7; font-size: 0.77rem; font-weight: 600;
-    padding: 5px 13px; border-radius: 9999px;
-  }
-  .status-dot {
-    width:6px; height:6px; border-radius:50%;
-    background: #10b981; box-shadow: 0 0 6px rgba(16,185,129,0.6);
-  }
-
-  /* ── Buttons ─────────────────────────────────────────── */
-  div.stButton > button {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
-    color: #ffffff !important; border: none !important;
-    font-weight: 600 !important; font-size: 0.95rem !important;
-    border-radius: 12px !important; padding: 0.75rem 2rem !important;
-    box-shadow: 0 4px 20px rgba(99,102,241,0.35) !important;
-    transition: all 0.25s ease !important;
-  }
-  div.stButton > button:hover {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
-    box-shadow: 0 6px 24px rgba(99,102,241,0.5) !important;
-    transform: translateY(-2px) !important; color: #ffffff !important;
-  }
-
-  /* ── Inputs ─────────────────────────────────────────── */
-  .stTextInput input, .stTextArea textarea {
-    background: rgba(15,20,35,0.8) !important;
-    border: 1px solid rgba(99,102,241,0.2) !important;
-    border-radius: 12px !important; color: #e2e8f0 !important;
-    transition: all 0.2s ease !important;
-  }
-  .stTextInput input:focus, .stTextArea textarea:focus {
-    border-color: rgba(99,102,241,0.6) !important;
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.12) !important;
-  }
-  .stTextInput input::placeholder, .stTextArea textarea::placeholder { color: #334155 !important; }
-  .stTextInput label, .stTextArea label {
-    color: #94a3b8 !important; font-weight: 600 !important; font-size: 0.85rem !important;
-  }
-  [data-testid="stFileUploaderDropzone"] {
-    background: rgba(15,20,35,0.6) !important;
-    border: 2px dashed rgba(99,102,241,0.25) !important;
-    border-radius: 14px !important; transition: all 0.25s ease !important;
-  }
-  [data-testid="stFileUploaderDropzone"]:hover {
-    border-color: rgba(99,102,241,0.5) !important;
-    background: rgba(99,102,241,0.06) !important;
-  }
-  .stCheckbox label { color: #94a3b8 !important; }
-  .stSelectbox [data-baseweb="select"] > div {
-    background: rgba(15,20,35,0.8) !important;
-    border: 1px solid rgba(99,102,241,0.2) !important;
-    border-radius: 12px !important; color: #e2e8f0 !important;
-  }
-
-  /* ── Tabs ────────────────────────────────────────────── */
-  .stTabs [data-baseweb="tab-list"] {
-    gap:4px; border-bottom: 1px solid rgba(99,102,241,0.15);
-    background:transparent; padding-bottom:4px;
-  }
-  .stTabs [data-baseweb="tab"] {
-    background:transparent; border:none; color:#64748b;
-    font-weight:600; font-size:0.9rem; padding:8px 18px;
-    border-radius:8px; transition:all 0.2s ease;
-  }
-  .stTabs [data-baseweb="tab"]:hover {
-    color:#cbd5e1; background:rgba(99,102,241,0.08);
-  }
-  .stTabs [aria-selected="true"] {
-    background:rgba(99,102,241,0.15) !important;
-    color:#a5b4fc !important;
-    border-bottom:2px solid #6366f1 !important;
-    font-weight:700 !important;
-  }
-
-  /* ── Metrics ─────────────────────────────────────────── */
-  [data-testid="stMetric"] {
-    background: rgba(15,20,35,0.7) !important;
-    border: 1px solid rgba(99,102,241,0.15) !important;
-    border-radius:14px !important; padding:16px 20px !important;
-    backdrop-filter:blur(8px) !important;
-  }
-  [data-testid="stMetricValue"] {
-    color:#e2e8f0 !important; font-weight:700 !important;
-    font-family:'Space Grotesk',sans-serif !important;
-  }
-  [data-testid="stMetricLabel"] {
-    color:#64748b !important; font-weight:600 !important; font-size:0.82rem !important;
-  }
-
-  /* ── Score Cards ─────────────────────────────────────── */
-  .score-card {
-    text-align:center; padding:22px 18px;
-    background:rgba(15,20,35,0.8);
-    border:1px solid rgba(99,102,241,0.15);
-    border-radius:16px; backdrop-filter:blur(8px);
-    transition:all 0.3s ease; position:relative; overflow:hidden;
-  }
-  .score-card::before {
-    content:''; position:absolute; top:0;left:0;right:0; height:3px;
-    background:linear-gradient(90deg, #6366f1, #a855f7);
-    border-radius:16px 16px 0 0;
-  }
-  .score-card:hover {
-    border-color:rgba(99,102,241,0.3); transform:translateY(-2px);
-    box-shadow:0 12px 32px rgba(0,0,0,0.4);
-  }
-  .score-val {
-    font-family:'Space Grotesk',sans-serif;
-    font-size:2.8rem; font-weight:800; line-height:1; letter-spacing:-0.05em;
-  }
-  .score-lbl {
-    font-size:0.75rem; color:#64748b; margin-top:7px;
-    font-weight:600; text-transform:uppercase; letter-spacing:0.8px;
-  }
-  .col-green { color:#34d399; }
-  .col-yellow { color:#fbbf24; }
-  .col-red { color:#f87171; }
-  .col-blue { color:#60a5fa; }
-  .col-purple { color:#c084fc; }
-
-  /* ── Skill Badges ────────────────────────────────────── */
-  .skill-badge {
-    display:inline-flex; align-items:center;
-    background:rgba(99,102,241,0.12);
-    border:1px solid rgba(99,102,241,0.25);
-    color:#a5b4fc; padding:4px 13px; border-radius:9999px;
-    margin:3px; font-size:0.82rem; font-weight:500;
-    transition:all 0.2s ease;
-  }
-  .skill-badge:hover { background:rgba(99,102,241,0.22); }
-  .skill-badge-red {
-    background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2);
-    color:#fca5a5; padding:4px 13px; border-radius:9999px;
-    margin:3px; font-size:0.82rem; font-weight:500; display:inline-flex;
-  }
-  .skill-badge-green {
-    background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.25);
-    color:#6ee7b7; padding:4px 13px; border-radius:9999px;
-    margin:3px; font-size:0.82rem; font-weight:500; display:inline-flex;
-  }
-  .skill-badge-yellow {
-    background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.2);
-    color:#fcd34d; padding:4px 13px; border-radius:9999px;
-    margin:3px; font-size:0.82rem; font-weight:500; display:inline-flex;
-  }
-
-  /* ── Roadmap ─────────────────────────────────────────── */
-  .roadmap-card {
-    background:rgba(15,20,35,0.7);
-    border-left:3px solid #6366f1;
-    border-radius:0 12px 12px 0; padding:16px 20px; margin:10px 0;
-    border-top:1px solid rgba(99,102,241,0.1);
-    border-right:1px solid rgba(99,102,241,0.1);
-    border-bottom:1px solid rgba(99,102,241,0.1);
-    transition:all 0.2s ease;
-  }
-  .roadmap-card:hover { transform:translateX(4px); }
-  .roadmap-beginner { border-left-color:#34d399; }
-  .roadmap-intermediate { border-left-color:#6366f1; }
-  .roadmap-advanced { border-left-color:#a855f7; }
-
-  /* ── Mode Badges ─────────────────────────────────────── */
-  .mode-badge {
-    display:inline-flex; align-items:center; gap:6px;
-    padding:5px 14px; border-radius:9999px;
-    font-weight:700; font-size:0.75rem; letter-spacing:0.8px;
-    text-transform:uppercase; margin:10px 0;
-  }
-  .mode-full { background:rgba(99,102,241,0.15); color:#a5b4fc; border:1px solid rgba(99,102,241,0.3); }
-  .mode-partial { background:rgba(245,158,11,0.12); color:#fcd34d; border:1px solid rgba(245,158,11,0.25); }
-  .mode-guidance { background:rgba(100,116,139,0.15); color:#94a3b8; border:1px solid rgba(100,116,139,0.25); }
-
-  /* ── Progress ────────────────────────────────────────── */
-  .stProgress > div > div > div > div {
-    background: linear-gradient(90deg, #6366f1, #a855f7) !important;
-    border-radius:9999px !important;
-  }
-  .stProgress > div > div > div {
-    background:rgba(99,102,241,0.1) !important; border-radius:9999px !important;
-  }
-
-  /* ── Empty States ────────────────────────────────────── */
-  .empty-state { text-align:center; padding:48px 24px; }
-  .empty-state-icon { font-size:3rem; margin-bottom:12px; opacity:0.4; }
-  .empty-state-text { font-size:0.93rem; color:#475569; max-width:360px; margin:0 auto; line-height:1.6; }
-
-  /* ── Architecture cards ───────────────────────────────── */
-  .arch-card {
-    background:rgba(15,20,35,0.7);
-    border:1px solid rgba(99,102,241,0.12);
-    border-radius:14px; padding:18px 22px; margin:10px 0;
-    transition:all 0.25s ease; position:relative; overflow:hidden;
-  }
-  .arch-card:hover {
-    border-color:rgba(99,102,241,0.3);
-    transform:translateX(4px);
-    box-shadow:0 4px 24px rgba(0,0,0,0.3);
-  }
-  .arch-card-accent {
-    position:absolute; left:0; top:0; bottom:0; width:4px;
-    border-radius:14px 0 0 14px;
-  }
-
-  /* ── Sidebar section labels ──────────────────────────── */
-  .sidebar-section-title {
-    font-family:'Space Grotesk',sans-serif;
-    font-size:0.72rem; font-weight:700; color:#6366f1;
-    letter-spacing:1.2px; text-transform:uppercase;
-    margin:18px 0 10px 0; padding-bottom:6px;
-    border-bottom:1px solid rgba(99,102,241,0.15);
-  }
-
-  /* ── Scrollbar ───────────────────────────────────────── */
-  ::-webkit-scrollbar { width:6px; height:6px; }
-  ::-webkit-scrollbar-track { background:#0d1117; }
-  ::-webkit-scrollbar-thumb { background:rgba(99,102,241,0.3); border-radius:4px; }
-  ::-webkit-scrollbar-thumb:hover { background:rgba(99,102,241,0.5); }
-
-  hr { border-color:rgba(99,102,241,0.1) !important; }
-  .stDataFrame { border:1px solid rgba(99,102,241,0.15) !important; border-radius:12px !important; overflow:hidden; }
-
-
-  /* Sidebar styling */
-  section[data-testid="stSidebar"] {
-    background: #ffffff !important;
-    border-right: 1px solid #ebe6f2 !important;
-  }
-  section[data-testid="stSidebar"] h1,
-  section[data-testid="stSidebar"] h2,
-  section[data-testid="stSidebar"] h3,
-  section[data-testid="stSidebar"] h4 {
-    color: #17151e !important;
-    font-weight: 700;
-  }
-  section[data-testid="stSidebar"] p, section[data-testid="stSidebar"] label {
-    color: #5d5966 !important;
-  }
-
-  /* Typography */
-  h1, h2, h3, h4 {
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    letter-spacing: -0.025em;
-    color: #17151e;
-  }
-  
-  .main p, .main span, .main div {
-    color: #3e3848;
-  }
-
-  /* Sticky Medihealth Navbar */
-  .mossga-navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #ffffff;
-    border: 1px solid #ebe6f2;
-    border-radius: 9999px;
-    padding: 10px 24px;
-    margin: -1.2rem 0 1.5rem 0;
-    box-shadow: 0 2px 14px rgba(107, 85, 128, 0.05);
-  }
-  .nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .brand-logo-mark {
-    width: 28px;
-    height: 28px;
-    background: linear-gradient(135deg, #735384 0%, #9b7fa8 100%);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    font-weight: 800;
-    font-size: 0.95rem;
-  }
-  .brand-name {
-    font-size: 1.15rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    color: #17151e;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .brand-badge {
-    background: #f1ecf7;
-    color: #6a4878;
-    font-size: 0.68rem;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 9999px;
-    border: 1px solid #e2d8eb;
-    letter-spacing: 0.5px;
-  }
-  .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .nav-status-pill {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    color: #166534;
-    font-size: 0.78rem;
-    font-weight: 600;
-    padding: 5px 14px;
-    border-radius: 9999px;
-  }
-  .status-dot-active {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #16a34a;
-  }
-  .nav-gh-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #f5f1fa;
-    border: 1px solid #e3d7ec;
-    color: #553c63 !important;
-    text-decoration: none !important;
-    font-size: 0.82rem;
-    font-weight: 600;
-    padding: 6px 16px;
-    border-radius: 9999px;
-    transition: all 0.2s ease;
-  }
-  .nav-gh-btn:hover {
-    background: #ebe3f4;
-    color: #3b2847 !important;
-  }
-
-  /* Segmented Nav Pill Styling (Medihealth style) */
-  div[data-testid="stRadio"] {
-    display: flex;
-    justify-content: center;
-    margin: 0.5rem auto 1.8rem auto;
-  }
-  div[data-testid="stRadio"] > div {
+  /* Sidebar Buttons */
+  section[data-testid="stSidebar"] .stButton > button {
     background: #f1ecf7 !important;
-    border: 1px solid #e2d8eb !important;
-    border-radius: 9999px !important;
-    padding: 4px 6px !important;
-    gap: 4px !important;
-    flex-direction: row !important;
-    justify-content: center !important;
-    max-width: 820px !important;
-    width: auto !important;
-  }
-  div[data-testid="stRadio"] label {
-    background: transparent !important;
-    border-radius: 9999px !important;
-    padding: 7px 20px !important;
-    margin: 0 !important;
+    color: #6a4878 !important;
+    border: 1px solid #d8cce8 !important;
+    border-radius: 10px !important;
     font-weight: 600 !important;
-    font-size: 0.88rem !important;
-    cursor: pointer !important;
-    transition: all 0.2s ease !important;
-    color: #6d6778 !important;
-    border: none !important;
+    font-size: 0.82rem !important;
+    transition: background 0.2s, transform 0.1s !important;
   }
-  div[data-testid="stRadio"] label:hover {
-    color: #17151e !important;
-  }
-  div[data-testid="stRadio"] label:has(input:checked) {
-    background: #ffffff !important;
-    color: #17151e !important;
-    box-shadow: 0 2px 8px rgba(100, 80, 120, 0.08) !important;
-    font-weight: 700 !important;
-  }
-  div[data-testid="stRadio"] label div[data-testid="stMarkdownContainer"] p {
-    color: inherit !important;
-    font-weight: inherit !important;
-    margin: 0 !important;
-  }
-  div[data-testid="stRadio"] input[type="radio"] {
-    display: none !important;
-  }
-
-  /* Cards */
-  .glass-card {
-    background: #ffffff;
-    border: 1px solid #ebe6f2;
-    border-radius: 18px;
-    padding: 24px;
-    margin: 14px 0;
-    box-shadow: 0 4px 20px -2px rgba(107, 85, 128, 0.05);
-    transition: all 0.2s ease;
-  }
-  .glass-card:hover {
-    box-shadow: 0 8px 24px -2px rgba(107, 85, 128, 0.09);
-    border-color: #ded6e6;
-  }
-
-  /* Medihealth Hero Header */
-  .hero-container {
-    padding: 1.5rem 0 1rem 0;
-    margin-bottom: 1.2rem;
-  }
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: #f1ecf7;
-    border: 1px solid #e2d8eb;
-    color: #6a4878;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    padding: 6px 16px;
-    border-radius: 9999px;
-    margin-bottom: 1rem;
-  }
-  .hero-title {
-    font-size: 2.85rem !important;
-    font-weight: 800 !important;
-    letter-spacing: -0.03em !important;
-    line-height: 1.18 !important;
-    color: #17151e !important;
-    margin-bottom: 0.8rem !important;
-  }
-  .hero-subtitle {
-    color: #5d5966 !important;
-    font-size: 1.1rem !important;
-    max-width: 720px;
-    line-height: 1.6 !important;
-    font-weight: 400;
-  }
-
-  /* Medihealth Side Stats Container */
-  .stat-badge-box {
-    background: #f5f1fa;
-    border: 1px solid #e3d7ec;
-    border-radius: 14px;
-    padding: 14px 18px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .stat-badge-num {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #735384;
-    letter-spacing: -0.5px;
-  }
-  .stat-badge-txt {
-    font-size: 0.82rem;
-    color: #5d5966;
-    font-weight: 600;
-  }
-
-  /* Primary Button (Plum pill) */
-  div.stButton > button[kind="primary"],
-  div.stButton > button {
-    background: #735384 !important;
-    color: #ffffff !important;
-    border: none !important;
-    font-weight: 600 !important;
-    font-size: 0.96rem !important;
-    border-radius: 9999px !important;
-    padding: 0.75rem 2.2rem !important;
-    box-shadow: 0 4px 14px rgba(115, 83, 132, 0.22) !important;
-    transition: all 0.2s ease !important;
-  }
-  div.stButton > button:hover {
-    background: #5d406b !important;
-    color: #ffffff !important;
-    box-shadow: 0 6px 18px rgba(115, 83, 132, 0.32) !important;
+  section[data-testid="stSidebar"] .stButton > button:hover {
+    background: #e6dcf2 !important;
     transform: translateY(-1px) !important;
   }
 
-  /* Form Inputs */
-  .stTextInput input, .stTextArea textarea {
-    background: #ffffff !important;
-    border: 1px solid #dfd8e7 !important;
-    border-radius: 12px !important;
-    color: #17151e !important;
-    transition: all 0.2s ease !important;
+  /* ── Typography ─────────────────────────────────────────── */
+  h1, h2, h3, h4, h5 {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    letter-spacing: -0.02em !important;
+    color: #1a1523 !important;
   }
-  .stTextInput input:focus, .stTextArea textarea:focus {
-    border-color: #8c6a99 !important;
-    box-shadow: 0 0 0 3px rgba(140, 106, 153, 0.15) !important;
-  }
-  [data-testid="stFileUploaderDropzone"] {
-    background: #faf8fd !important;
-    border: 2px dashed #dcd4e4 !important;
-    border-radius: 14px !important;
-    transition: all 0.2s ease !important;
-  }
-  [data-testid="stFileUploaderDropzone"]:hover {
-    border-color: #8c6a99 !important;
-    background: #f5f0fa !important;
-  }
-  .stTextInput label, .stTextArea label, [data-testid="stFileUploaderDropzone"] label {
-    color: #2e2836 !important;
-    font-weight: 600 !important;
-  }
+  .main p, .main span, .main li { color: #6b6578 !important; }
+  .main strong, .main b { color: #1a1523 !important; }
 
-  /* Tab styling */
-  .stTabs [data-baseweb="tab-list"] {
-    gap: 8px;
-    border-bottom: 1px solid #ebe6f2;
-    padding-bottom: 4px;
+  /* ── Navbar ─────────────────────────────────────────────── */
+  .mossga-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #e8e0f0;
+    border-radius: 16px;
+    padding: 12px 24px;
+    margin: 0 0 1.5rem 0;
+    box-shadow: 0 2px 12px rgba(115,83,132,0.07);
   }
-  .stTabs [data-baseweb="tab"] {
+  .nav-brand { display:flex; align-items:center; gap:14px; }
+  .brand-logo-mark {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: linear-gradient(135deg,#735384,#9b7fa8);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; box-shadow: 0 4px 12px rgba(115,83,132,0.25);
+  }
+  .brand-name {
+    display: block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800; font-size: 1.1rem;
+    color: #1a1523;
+    letter-spacing: -0.03em;
+  }
+  .brand-badge {
+    display: inline-block;
+    background: linear-gradient(135deg,#735384,#9b7fa8);
+    color: #fff !important;
+    font-size: 0.6rem; font-weight: 700;
+    padding: 2px 7px; border-radius: 999px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    vertical-align: middle; margin-left: 6px;
+  }
+  .brand-sub {
+    display: block;
+    font-size: 0.72rem; color: #9490a0;
+    font-weight: 500; letter-spacing: 0.01em;
+    margin-top: 2px;
+  }
+  .nav-right { display:flex; align-items:center; gap:12px; }
+  .status-live {
+    display: flex; align-items: center; gap: 6px;
+    background: #f0fdf4; border: 1px solid #bbf7d0;
+    border-radius: 999px; padding: 5px 12px;
+    font-size: 0.75rem; font-weight: 600;
+    color: #166534 !important;
+  }
+  .pulse-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #22c55e;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.5; transform:scale(0.75); }
+  }
+  .nav-gh-btn {
+    display: flex; align-items: center; gap: 7px;
+    background: #1a1523; color: #fff !important;
+    border-radius: 999px; padding: 7px 16px;
+    font-size: 0.78rem; font-weight: 600;
+    text-decoration: none; transition: background 0.2s;
+  }
+  .nav-gh-btn:hover { background: #2d2440; }
+
+  /* ── Navigation Pills ───────────────────────────────────── */
+  .nav-pills {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    background: #ffffff;
+    border: 1px solid #e8e0f0;
+    border-radius: 14px;
+    padding: 6px 8px;
+    margin-bottom: 1.4rem;
+    box-shadow: 0 1px 6px rgba(115,83,132,0.05);
+  }
+  .nav-pill {
+    padding: 8px 20px; border-radius: 10px;
+    font-size: 0.84rem; font-weight: 600;
+    cursor: pointer; transition: all 0.18s ease;
+    color: #6b6578 !important;
     background: transparent;
-    border: none;
-    color: #6d6778;
-    font-weight: 600;
-    font-size: 0.92rem;
-    padding: 8px 16px;
-    border-radius: 8px;
-    transition: all 0.2s ease;
   }
-  .stTabs [data-baseweb="tab"]:hover {
-    color: #17151e;
-  }
-  .stTabs [aria-selected="true"] {
+  .nav-pill:hover { background: #f1ecf7; color: #735384 !important; }
+  .nav-pill.active {
     background: #f1ecf7 !important;
     color: #6a4878 !important;
-    border-bottom: 2px solid #735384 !important;
-    font-weight: 700 !important;
+    box-shadow: 0 1px 4px rgba(115,83,132,0.12);
+    border-bottom: 2px solid #735384;
   }
 
-  /* Metric cards */
-  [data-testid="stMetric"] {
+  /* ── Glass Cards ────────────────────────────────────────── */
+  .glass-card {
     background: #ffffff !important;
-    border: 1px solid #ebe6f2 !important;
+    border: 1px solid #e8e0f0 !important;
+    border-radius: 16px !important;
+    padding: 20px !important;
+    margin-bottom: 1rem !important;
+    box-shadow: 0 2px 10px rgba(115,83,132,0.05) !important;
+    color: #1a1523 !important;
+  }
+  .glass-card * { color: #1a1523 !important; }
+  .glass-card h4, .glass-card h3 { color: #1a1523 !important; font-weight: 700 !important; }
+  .glass-card p, .glass-card span { color: #6b6578 !important; }
+  .glass-card strong { color: #1a1523 !important; }
+
+  /* ── Score Cards ────────────────────────────────────────── */
+  .score-card {
+    background: #ffffff !important;
+    border: 1px solid #e8e0f0 !important;
     border-radius: 14px !important;
-    padding: 16px 20px !important;
-    box-shadow: 0 2px 10px rgba(107, 85, 128, 0.04) !important;
+    padding: 20px 18px !important;
+    text-align: center !important;
+    position: relative !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 10px rgba(115,83,132,0.06) !important;
   }
-  [data-testid="stMetricValue"] {
-    color: #17151e !important;
+  .score-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg,#735384,#9b7fa8);
+    border-radius: 14px 14px 0 0;
+  }
+  .score-val {
+    display: block;
+    font-size: 2.4rem !important;
+    font-weight: 800 !important;
+    color: #1a1523 !important;
+    line-height: 1.1 !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    letter-spacing: -0.04em !important;
+  }
+  .score-lbl {
+    display: block;
+    font-size: 0.75rem !important;
+    color: #6b6578 !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    margin-top: 4px !important;
+  }
+  .col-green  { color: #059669 !important; }
+  .col-yellow { color: #d97706 !important; }
+  .col-red    { color: #dc2626 !important; }
+  .col-blue   { color: #2563eb !important; }
+  .col-purple { color: #735384 !important; }
+
+  /* ── Hero Section ───────────────────────────────────────── */
+  .hero-wrap {
+    background: linear-gradient(135deg, #f6f4fb 0%, #ede9f7 100%);
+    border: 1px solid #ddd6f0;
+    border-radius: 20px;
+    padding: 32px 36px;
+    margin-bottom: 1.5rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-chip {
+    display: inline-block;
+    background: rgba(115,83,132,0.1);
+    border: 1px solid rgba(115,83,132,0.2);
+    color: #735384 !important;
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .hero-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.9rem; font-weight: 800;
+    color: #1a1523 !important;
+    letter-spacing: -0.04em; line-height: 1.2;
+    margin: 0 0 8px 0;
+  }
+  .hero-sub {
+    font-size: 0.95rem;
+    color: #6b6578 !important;
+    font-weight: 400; line-height: 1.6;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: #f0fdf4; border: 1px solid #bbf7d0;
+    color: #166534 !important;
+    border-radius: 999px; padding: 3px 10px;
+    font-size: 0.72rem; font-weight: 700;
+  }
+
+  /* ── Status bar ─────────────────────────────────────────── */
+  .status-bar {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    background: #f1ecf7;
+    border: 1px solid #e0d5ee;
+    border-radius: 12px; padding: 10px 14px;
+    margin: 0.6rem 0 1.2rem 0;
+  }
+  .status-pill {
+    display: flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 0.74rem; font-weight: 600;
+    background: #ffffff; border: 1px solid #ddd5ed;
+    color: #6b6578 !important;
+  }
+  .status-dot { width:7px; height:7px; border-radius:50%; display:inline-block; }
+
+  /* ── Sidebar Section Titles ─────────────────────────────── */
+  .sidebar-section-title {
+    font-size: 0.72rem !important;
     font-weight: 700 !important;
+    color: #9490a0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    margin: 1.2rem 0 0.5rem 0 !important;
+    padding-bottom: 6px !important;
+    border-bottom: 1px solid #e8e0f0 !important;
   }
-  [data-testid="stMetricLabel"] {
-    color: #6d6778 !important;
+  .input-section-title {
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    color: #735384 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    margin: 1.2rem 0 0.5rem 0 !important;
+  }
+
+  /* ── Skill Badges ───────────────────────────────────────── */
+  .skill-badge {
+    display: inline-block;
+    background: #f1ecf7;
+    color: #6a4878 !important;
+    border: 1px solid #d8cce8;
+    border-radius: 999px;
+    padding: 3px 11px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    margin: 2px 3px;
+  }
+  .skill-badge-red {
+    background: #fff1f2 !important;
+    color: #be123c !important;
+    border-color: #fecdd3 !important;
+  }
+  .skill-badge-green {
+    background: #f0fdf4 !important;
+    color: #166534 !important;
+    border-color: #bbf7d0 !important;
+  }
+
+  /* ── Mode Badges ────────────────────────────────────────── */
+  .mode-badge {
+    display: inline-block;
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 0.72rem; font-weight: 700;
+  }
+  .mode-full       { background:#ede9fe; color:#6d28d9 !important; border:1px solid #c4b5fd; }
+  .mode-partial    { background:#fefce8; color:#854d0e !important; border:1px solid #fde68a; }
+  .mode-guidance   { background:#fef2f2; color:#991b1b !important; border:1px solid #fecaca; }
+
+  /* ── Roadmap Cards ──────────────────────────────────────── */
+  .roadmap-card {
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    padding: 16px 18px !important;
+    margin-bottom: 10px !important;
+    border-left: 4px solid #735384 !important;
+    border-top: 1px solid #ebe6f2 !important;
+    border-right: 1px solid #ebe6f2 !important;
+    border-bottom: 1px solid #ebe6f2 !important;
+    color: #1a1523 !important;
+    box-shadow: 0 1px 6px rgba(115,83,132,0.05) !important;
+  }
+  .roadmap-card * { color: #1a1523 !important; }
+  .roadmap-card p, .roadmap-card span { color: #6b6578 !important; }
+  .roadmap-beginner    { border-left-color: #059669 !important; }
+  .roadmap-intermediate{ border-left-color: #735384 !important; }
+  .roadmap-advanced    { border-left-color: #9b7fa8 !important; }
+
+  /* ── Empty State ────────────────────────────────────────── */
+  .empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    background: #ffffff;
+    border: 2px dashed #ddd6f0;
+    border-radius: 16px;
+    margin: 1rem 0;
+  }
+  .empty-state-icon { font-size: 3rem; display: block; margin-bottom: 12px; }
+  .empty-state-text {
+    color: #9490a0 !important;
+    font-size: 0.95rem; font-weight: 500;
+  }
+
+  /* ── Streamlit Input Widgets ────────────────────────────── */
+  .stTextInput > div > div > input,
+  .stTextArea > div > div > textarea,
+  .stSelectbox > div > div {
+    background: #ffffff !important;
+    border: 1px solid #d8cce8 !important;
+    border-radius: 10px !important;
+    color: #1a1523 !important;
+    font-size: 0.9rem !important;
+  }
+  .stTextInput > div > div > input::placeholder,
+  .stTextArea > div > div > textarea::placeholder { color: #9490a0 !important; }
+  .stTextInput label, .stTextArea label, .stSelectbox label,
+  .stSlider label, .stFileUploader label {
+    color: #1a1523 !important;
     font-weight: 600 !important;
     font-size: 0.85rem !important;
   }
 
-  /* Score Gauges */
-  .score-gauge {
-    text-align: center;
-    padding: 16px;
-    background: #ffffff;
-    border: 1px solid #ebe6f2;
-    border-radius: 14px;
-    box-shadow: 0 2px 10px rgba(107, 85, 128, 0.04);
-  }
-  .score-value {
-    font-size: 2.6rem;
-    font-weight: 800;
-    line-height: 1;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-  }
-  .score-label {
-    font-size: 0.8rem;
-    color: #6d6778;
-    margin-top: 6px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .score-green { color: #059669 !important; }
-  .score-yellow { color: #d97706 !important; }
-  .score-red { color: #dc2626 !important; }
+  /* Slider */
+  .stSlider > div[data-baseweb] > div { background: #e8e0f0 !important; }
+  .stSlider > div[data-baseweb] [role="slider"] { background: #735384 !important; }
 
-  /* Mode badge */
-  .mode-badge {
-    display: inline-block;
-    padding: 5px 14px;
-    border-radius: 9999px;
-    font-weight: 700;
-    font-size: 0.8rem;
-    letter-spacing: 0.5px;
-    margin: 8px 0;
-  }
-  .mode-full {
-    background: #f1ecf7;
-    color: #6a4878;
-    border: 1px solid #e2d8eb;
-  }
-  .mode-partial {
-    background: #fefce8;
-    color: #a16207;
-    border: 1px solid #fef08a;
-  }
-  .mode-guidance {
-    background: #f3f4f6;
-    color: #4b5563;
-    border: 1px solid #e5e7eb;
+  /* File uploader */
+  .stFileUploader {
+    background: #ffffff !important;
+    border: 2px dashed #d8cce8 !important;
+    border-radius: 12px !important;
   }
 
-  /* Roadmap steps */
-  .roadmap-step {
-    background: #ffffff;
-    border-left: 4px solid #735384;
-    border-radius: 0 10px 10px 0;
-    padding: 16px 20px;
-    margin: 10px 0;
-    border-top: 1px solid #ebe6f2;
-    border-right: 1px solid #ebe6f2;
-    border-bottom: 1px solid #ebe6f2;
+  /* Primary Streamlit Buttons */
+  .stButton > button[kind="primary"],
+  .stButton > button {
+    background: #735384 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    padding: 9px 20px !important;
+    transition: background 0.2s, transform 0.12s !important;
+    box-shadow: 0 2px 8px rgba(115,83,132,0.25) !important;
   }
-  .roadmap-beginner { border-left-color: #059669; }
-  .roadmap-intermediate { border-left-color: #735384; }
-  .roadmap-advanced { border-left-color: #9b7fa8; }
+  .stButton > button:hover {
+    background: #5e3f6e !important;
+    transform: translateY(-1px) !important;
+  }
+  .stButton > button:active { transform: translateY(0) !important; }
+
+  /* ── Tabs ───────────────────────────────────────────────── */
+  .stTabs [data-baseweb="tab-list"] {
+    background: #f1ecf7 !important;
+    border-radius: 12px !important;
+    padding: 4px !important;
+    gap: 2px !important;
+    border: none !important;
+  }
+  .stTabs [data-baseweb="tab"] {
+    background: transparent !important;
+    border-radius: 9px !important;
+    color: #6b6578 !important;
+    font-weight: 600 !important;
+    font-size: 0.84rem !important;
+    padding: 8px 18px !important;
+    border: none !important;
+  }
+  .stTabs [aria-selected="true"] {
+    background: #ffffff !important;
+    color: #6a4878 !important;
+    border-bottom: 2px solid #735384 !important;
+    box-shadow: 0 1px 4px rgba(115,83,132,0.1) !important;
+  }
+
+  /* ── Metric Cards ───────────────────────────────────────── */
+  div[data-testid="stMetric"] {
+    background: #ffffff !important;
+    border: 1px solid #e8e0f0 !important;
+    border-radius: 14px !important;
+    padding: 16px 18px !important;
+    box-shadow: 0 1px 6px rgba(115,83,132,0.05) !important;
+  }
+  div[data-testid="stMetricValue"] {
+    color: #1a1523 !important;
+    font-weight: 800 !important;
+    font-size: 1.8rem !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+  }
+  div[data-testid="stMetricLabel"] {
+    color: #6b6578 !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+  }
+  div[data-testid="stMetricDelta"] { font-weight: 600 !important; font-size: 0.82rem !important; }
+
+  /* ── Expanders ──────────────────────────────────────────── */
+  .streamlit-expanderHeader {
+    background: #f8f5fd !important;
+    border: 1px solid #e8e0f0 !important;
+    border-radius: 10px !important;
+    color: #1a1523 !important;
+    font-weight: 600 !important;
+  }
+  .streamlit-expanderContent {
+    background: #ffffff !important;
+    border: 1px solid #e8e0f0 !important;
+    border-top: none !important;
+    color: #1a1523 !important;
+  }
+
+  /* ── Dataframes / Tables ────────────────────────────────── */
+  .stDataFrame, .stTable {
+    background: #ffffff !important;
+    border: 1px solid #e8e0f0 !important;
+    border-radius: 12px !important;
+  }
+  .stDataFrame th {
+    background: #f1ecf7 !important;
+    color: #1a1523 !important;
+    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+  }
+  .stDataFrame td { color: #1a1523 !important; font-size: 0.84rem !important; }
+
+  /* ── Success / Info / Warning / Error Alerts ────────────── */
+  .stSuccess { background: #f0fdf4 !important; border-left-color: #22c55e !important; color: #166534 !important; }
+  .stInfo    { background: #eff6ff !important; border-left-color: #3b82f6 !important; color: #1e40af !important; }
+  .stWarning { background: #fefce8 !important; border-left-color: #f59e0b !important; color: #854d0e !important; }
+  .stError   { background: #fef2f2 !important; border-left-color: #ef4444 !important; color: #991b1b !important; }
+
+  /* ── Progress Bar ───────────────────────────────────────── */
+  .stProgress > div > div > div { background: linear-gradient(90deg,#735384,#9b7fa8) !important; }
+
+  /* ── Spinner ────────────────────────────────────────────── */
+  .stSpinner > div { border-top-color: #735384 !important; }
+
+  /* ── Scrollbar ──────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #f6f4fb; }
+  ::-webkit-scrollbar-thumb { background: #d8cce8; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #b8a8d0; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -873,27 +550,27 @@ st.markdown("""
 # ---------------------------------------------------------------------------
 
 def plotly_dark_layout(fig, height=380, title=None):
-    """Apply consistent dark theme to all Plotly charts."""
+    """Apply consistent light theme to all Plotly charts."""
     updates = dict(
-        template="plotly_dark",
+        template="simple_white",
         height=height,
         paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(10,12,20,0.6)',
-        font=dict(family='Inter, sans-serif', color='#94a3b8', size=12),
+        plot_bgcolor='rgba(246,244,251,0.4)',
+        font=dict(family='Inter, sans-serif', color='#6b6578', size=12),
         margin=dict(l=24, r=24, t=48 if title else 28, b=28),
     )
     if title:
-        updates['title'] = dict(text=title, font=dict(color='#e2e8f0', size=14, family='Space Grotesk'), x=0.02)
+        updates['title'] = dict(text=title, font=dict(color='#1a1523', size=14, family='Plus Jakarta Sans'), x=0.02)
     fig.update_layout(**updates)
     fig.update_xaxes(
-        gridcolor='rgba(99,102,241,0.08)',
-        linecolor='rgba(99,102,241,0.15)',
-        tickfont=dict(color='#64748b'),
+        gridcolor='rgba(115,83,132,0.08)',
+        linecolor='rgba(115,83,132,0.12)',
+        tickfont=dict(color='#9490a0'),
     )
     fig.update_yaxes(
-        gridcolor='rgba(99,102,241,0.08)',
-        linecolor='rgba(99,102,241,0.15)',
-        tickfont=dict(color='#64748b'),
+        gridcolor='rgba(115,83,132,0.08)',
+        linecolor='rgba(115,83,132,0.12)',
+        tickfont=dict(color='#9490a0'),
     )
     return fig
 
@@ -936,10 +613,10 @@ if "github_input_val" not in st.session_state:
 
 with st.sidebar:
   st.markdown("""
-  <div style="text-align:center; padding:8px 0 20px 0; border-bottom:1px solid rgba(99,102,241,0.15); margin-bottom:16px;">
-    <div style="font-size:2.4rem; filter:drop-shadow(0 0 18px rgba(99,102,241,0.6));">🎯</div>
-    <div style="font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:800;color:#f1f5f9;letter-spacing:-0.03em;margin-top:6px;">MoSSGA Pro</div>
-    <div style="font-size:0.7rem;color:#6366f1;letter-spacing:1.2px;font-weight:700;text-transform:uppercase;">Talent Intelligence Platform</div>
+  <div style="text-align:center; padding:8px 0 20px 0; border-bottom:1px solid #e8e0f0; margin-bottom:16px;">
+    <div style="font-size:2.4rem; filter:drop-shadow(0 0 12px rgba(115,83,132,0.3));">🎯</div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.3rem;font-weight:800;color:#1a1523;letter-spacing:-0.03em;margin-top:6px;">MoSSGA Pro</div>
+    <div style="font-size:0.7rem;color:#735384;letter-spacing:1.2px;font-weight:700;text-transform:uppercase;">Talent Intelligence Platform</div>
   </div>
   """, unsafe_allow_html=True)
 
@@ -976,12 +653,12 @@ with st.sidebar:
 
   st.markdown('<div class="sidebar-section-title">ℹ️ System Specification</div>', unsafe_allow_html=True)
   st.markdown("""
-  <div style="font-size:0.8rem;color:#475569;line-height:2;">
-    <span style="color:#6366f1;">●</span> <b style="color:#94a3b8;">SBERT:</b> all-MiniLM-L6-v2 (384d)<br>
-    <span style="color:#8b5cf6;">●</span> <b style="color:#94a3b8;">Regressor:</b> XGBoost v2.0<br>
-    <span style="color:#a855f7;">●</span> <b style="color:#94a3b8;">NLP Core:</b> spaCy en_core_web_sm<br>
-    <span style="color:#ec4899;">●</span> <b style="color:#94a3b8;">Graph:</b> NetworkX DiGraph<br>
-    <span style="color:#10b981;">●</span> <b style="color:#94a3b8;">Deploy:</b> Cloud Ready ($PORT)
+  <div style="font-size:0.8rem;color:#6b6578;line-height:2;">
+    <span style="color:#735384;">●</span> <b style="color:#1a1523;">SBERT:</b> all-MiniLM-L6-v2 (384d)<br>
+    <span style="color:#9b7fa8;">●</span> <b style="color:#1a1523;">Regressor:</b> XGBoost v2.0<br>
+    <span style="color:#735384;">●</span> <b style="color:#1a1523;">NLP Core:</b> spaCy en_core_web_sm<br>
+    <span style="color:#9b7fa8;">●</span> <b style="color:#1a1523;">Graph:</b> NetworkX DiGraph<br>
+    <span style="color:#059669;">●</span> <b style="color:#1a1523;">Deploy:</b> Cloud Ready ($PORT)
   </div>
   """, unsafe_allow_html=True)
 
@@ -1036,8 +713,8 @@ def render_skill_graph_view():
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div>
         <div class="hero-badge">🌐 KNOWLEDGE GRAPH & TALENT ONTOLOGY</div>
-        <h2 style="margin: 8px 0 6px 0;">Workforce Skill Graph & Ontology Explorer</h2>
-        <p style="color: #94a3b8; margin: 0; font-size: 1rem;">
+        <h2 style="margin: 8px 0 6px 0; color:#1a1523;">Workforce Skill Graph & Ontology Explorer</h2>
+        <p style="color: #6b6578; margin: 0; font-size: 1rem;">
           Explore hierarchical skill dependencies, prerequisite chains, and research-grade role benchmark matrices.
         </p>
       </div>
@@ -1149,8 +826,8 @@ def render_architecture_view():
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div>
         <div class="hero-badge">🧠 SYSTEM ARCHITECTURE & METHODOLOGY</div>
-        <h2 style="margin: 8px 0 6px 0;">Research-Grade MoSSGA Pipeline</h2>
-        <p style="color: #94a3b8; margin: 0; font-size: 1rem;">
+        <h2 style="margin: 8px 0 6px 0; color:#1a1523;">Research-Grade MoSSGA Pipeline</h2>
+        <p style="color: #6b6578; margin: 0; font-size: 1rem;">
           A 5-layer hybrid framework combining Dense Transformers (Sentence-BERT), Cross-Modal Fusion, and Graph Reasoning.
         </p>
       </div>
@@ -1171,11 +848,11 @@ def render_architecture_view():
     st.markdown(f"""
     <div class="glass-card" style="border-left: 4px solid {color}; padding: 18px 24px;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h4 style="margin:0; color:#f8fafc;">{title}</h4>
+        <h4 style="margin:0; color:#1a1523;">{title}</h4>
         <span style="color:{color}; font-size:0.8rem; font-weight:700; text-transform:uppercase;">ACTIVE ENGINE</span>
       </div>
       <div style="color:{color}; font-size:0.92rem; font-weight:600; margin:6px 0;">{subtitle}</div>
-      <p style="color:#94a3b8; font-size:0.9rem; margin:0;">{desc}</p>
+      <p style="color:#6b6578; font-size:0.9rem; margin:0;">{desc}</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1200,8 +877,8 @@ def render_system_health_view():
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div>
         <div class="hero-badge">⚡ TELEMETRY & RUNTIME DIAGNOSTICS</div>
-        <h2 style="margin: 8px 0 6px 0;">System Diagnostics & Service Health</h2>
-        <p style="color: #94a3b8; margin: 0; font-size: 1rem;">
+        <h2 style="margin: 8px 0 6px 0; color:#1a1523;">System Diagnostics & Service Health</h2>
+        <p style="color: #6b6578; margin: 0; font-size: 1rem;">
           Real-time health telemetry across NLP transformers, machine learning artifacts, external APIs, and cloud environment.
         </p>
       </div>
