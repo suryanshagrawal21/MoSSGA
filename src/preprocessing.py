@@ -4,13 +4,7 @@ from collections import Counter
 import spacy
 
 # Load the spaCy language model for tokenisation and NER
-try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    print("spaCy model 'en_core_web_sm' not found. Downloading dynamically...")
-    import spacy.cli
-    spacy.cli.download("en_core_web_sm")
-    nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_sm")
 
 
 # ---------------------------------------------------------------------------
