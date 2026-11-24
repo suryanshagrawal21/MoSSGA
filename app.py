@@ -44,373 +44,504 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap');
 
-  /* Global background & text */
-  .stApp {
-    background-color: #080c14;
-    background-image: 
-      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
-      radial-gradient(at 50% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
-    background-attachment: fixed;
-    color: #f1f5f9;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+  /* ── Global ─────────────────────────────────────────── */
+  html, body, .stApp {
+    background: #080b14 !important;
+    color: #e2e8f0 !important;
+    font-family: 'Inter', sans-serif !important;
+  }
+  .block-container {
+    padding-top: 0.5rem !important;
+    padding-bottom: 2rem !important;
+    max-width: 1400px !important;
   }
 
-  /* Sidebar styling */
+  /* ── Sidebar ───────────────────────────────────────── */
   section[data-testid="stSidebar"] {
-    background: #0d1322 !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: linear-gradient(180deg, #0d1117 0%, #0a0f1e 100%) !important;
+    border-right: 1px solid rgba(99,102,241,0.15) !important;
   }
   section[data-testid="stSidebar"] .stMarkdown h1,
   section[data-testid="stSidebar"] .stMarkdown h2,
-  section[data-testid="stSidebar"] .stMarkdown h3 {
-    color: #f8fafc !important;
-    -webkit-text-fill-color: #f8fafc !important;
+  section[data-testid="stSidebar"] .stMarkdown h3,
+  section[data-testid="stSidebar"] .stMarkdown h4 {
+    color: #e2e8f0 !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-weight: 700 !important;
+  }
+  section[data-testid="stSidebar"] p,
+  section[data-testid="stSidebar"] label,
+  section[data-testid="stSidebar"] .stCaption { color: #94a3b8 !important; }
+  section[data-testid="stSidebar"] hr { border-color: rgba(99,102,241,0.2) !important; }
+
+  /* ── Typography ─────────────────────────────────────── */
+  h1, h2, h3, h4, h5 {
+    font-family: 'Space Grotesk', sans-serif !important;
+    letter-spacing: -0.02em !important;
+    color: #f1f5f9 !important;
+  }
+  .main p, .main span, .main li { color: #94a3b8 !important; }
+
+  /* ── Navbar ─────────────────────────────────────────── */
+  .mossga-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(13,17,23,0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 16px;
+    padding: 12px 24px;
+    margin: 0 0 1.5rem 0;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  .nav-brand { display:flex; align-items:center; gap:14px; }
+  .brand-logo-mark {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    border-radius: 10px;
+    display: flex; align-items:center; justify-content:center;
+    font-weight: 900; font-size: 1.1rem;
+    box-shadow: 0 0 20px rgba(99,102,241,0.4);
+  }
+  .brand-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem; font-weight: 800;
+    color: #f1f5f9; letter-spacing: -0.03em;
+  }
+  .brand-badge {
+    background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(168,85,247,0.2));
+    border: 1px solid rgba(99,102,241,0.4);
+    color: #a5b4fc; font-size: 0.65rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 9999px;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    margin-left: 8px; vertical-align: middle;
+  }
+  .brand-sub { font-size: 0.77rem; color: #64748b; display: block; }
+  .nav-right { display:flex; align-items:center; gap:12px; }
+  .status-live {
+    display:flex; align-items:center; gap:7px;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.25);
+    color: #34d399; font-size: 0.78rem; font-weight: 600;
+    padding: 6px 14px; border-radius: 9999px;
+  }
+  .pulse-dot {
+    width:8px; height:8px; border-radius:50%;
+    background:#10b981;
+    animation: pulse-anim 2s ease-in-out infinite;
+    box-shadow: 0 0 8px rgba(16,185,129,0.6);
+  }
+  @keyframes pulse-anim {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.6; transform:scale(0.85); }
+  }
+  .nav-gh-btn {
+    display:inline-flex; align-items:center; gap:6px;
+    background: rgba(99,102,241,0.1);
+    border: 1px solid rgba(99,102,241,0.3);
+    color: #a5b4fc !important; text-decoration:none !important;
+    font-size: 0.82rem; font-weight: 600;
+    padding: 6px 16px; border-radius: 9999px;
+    transition: all 0.25s ease;
+  }
+  .nav-gh-btn:hover {
+    background: rgba(99,102,241,0.2);
+    color: #c7d2fe !important;
+    transform: translateY(-1px);
+  }
+
+  /* ── Navigation Pills ───────────────────────────────── */
+  div[data-testid="stRadio"] {
+    display:flex; justify-content:center;
+    margin: 0 auto 2rem auto;
+  }
+  div[data-testid="stRadio"] > div {
+    background: rgba(13,17,23,0.9) !important;
+    border: 1px solid rgba(99,102,241,0.2) !important;
+    border-radius: 14px !important;
+    padding: 5px !important; gap: 3px !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    backdrop-filter: blur(12px);
+  }
+  div[data-testid="stRadio"] label {
+    background: transparent !important;
+    border-radius: 10px !important;
+    padding: 8px 22px !important; margin: 0 !important;
+    font-weight: 500 !important; font-size: 0.87rem !important;
+    cursor: pointer !important; transition: all 0.2s ease !important;
+    color: #64748b !important; border: none !important;
+  }
+  div[data-testid="stRadio"] label:hover {
+    color: #cbd5e1 !important;
+    background: rgba(99,102,241,0.08) !important;
+  }
+  div[data-testid="stRadio"] label:has(input:checked) {
+    background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(168,85,247,0.2)) !important;
+    color: #a5b4fc !important;
+    box-shadow: 0 2px 12px rgba(99,102,241,0.2) !important;
+    font-weight: 700 !important;
+    border: 1px solid rgba(99,102,241,0.3) !important;
+  }
+  div[data-testid="stRadio"] label div[data-testid="stMarkdownContainer"] p {
+    color: inherit !important; font-weight: inherit !important; margin: 0 !important;
+  }
+  div[data-testid="stRadio"] input[type="radio"] { display: none !important; }
+
+  /* ── Glass Cards ─────────────────────────────────────── */
+  .glass-card {
+    background: rgba(15,20,35,0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(99,102,241,0.12);
+    border-radius: 16px; padding: 24px; margin: 12px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+  .glass-card:hover {
+    border-color: rgba(99,102,241,0.25);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    transform: translateY(-1px);
+  }
+
+  /* ── Hero ───────────────────────────────────────────── */
+  .hero-wrap {
+    position: relative; padding: 2rem 0 1.5rem 0;
+    margin-bottom: 1.5rem; overflow: hidden;
+  }
+  .hero-wrap::before {
+    content: ''; position: absolute;
+    top: -60px; left: -60px; width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-chip {
+    display:inline-flex; align-items:center; gap:7px;
+    background: rgba(99,102,241,0.12);
+    border: 1px solid rgba(99,102,241,0.25);
+    color: #a5b4fc; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 9999px; margin-bottom: 1rem;
+  }
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 3.2rem !important; font-weight: 800 !important;
+    letter-spacing: -0.04em !important; line-height: 1.12 !important;
+    background: linear-gradient(135deg, #f1f5f9 0%, #a5b4fc 50%, #c084fc 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    margin-bottom: 1rem !important;
+  }
+  .hero-sub {
+    color: #64748b !important; font-size: 1.05rem !important;
+    line-height: 1.65 !important; max-width: 680px; font-weight: 400;
+  }
+
+  /* ── Status Bar ─────────────────────────────────────── */
+  .status-bar { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:1.8rem; }
+  .status-pill {
+    display:flex; align-items:center; gap:6px;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    color: #6ee7b7; font-size: 0.77rem; font-weight: 600;
+    padding: 5px 13px; border-radius: 9999px;
+  }
+  .status-dot {
+    width:6px; height:6px; border-radius:50%;
+    background: #10b981; box-shadow: 0 0 6px rgba(16,185,129,0.6);
+  }
+
+  /* ── Buttons ─────────────────────────────────────────── */
+  div.stButton > button {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+    color: #ffffff !important; border: none !important;
+    font-weight: 600 !important; font-size: 0.95rem !important;
+    border-radius: 12px !important; padding: 0.75rem 2rem !important;
+    box-shadow: 0 4px 20px rgba(99,102,241,0.35) !important;
+    transition: all 0.25s ease !important;
+  }
+  div.stButton > button:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+    box-shadow: 0 6px 24px rgba(99,102,241,0.5) !important;
+    transform: translateY(-2px) !important; color: #ffffff !important;
+  }
+
+  /* ── Inputs ─────────────────────────────────────────── */
+  .stTextInput input, .stTextArea textarea {
+    background: rgba(15,20,35,0.8) !important;
+    border: 1px solid rgba(99,102,241,0.2) !important;
+    border-radius: 12px !important; color: #e2e8f0 !important;
+    transition: all 0.2s ease !important;
+  }
+  .stTextInput input:focus, .stTextArea textarea:focus {
+    border-color: rgba(99,102,241,0.6) !important;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.12) !important;
+  }
+  .stTextInput input::placeholder, .stTextArea textarea::placeholder { color: #334155 !important; }
+  .stTextInput label, .stTextArea label {
+    color: #94a3b8 !important; font-weight: 600 !important; font-size: 0.85rem !important;
+  }
+  [data-testid="stFileUploaderDropzone"] {
+    background: rgba(15,20,35,0.6) !important;
+    border: 2px dashed rgba(99,102,241,0.25) !important;
+    border-radius: 14px !important; transition: all 0.25s ease !important;
+  }
+  [data-testid="stFileUploaderDropzone"]:hover {
+    border-color: rgba(99,102,241,0.5) !important;
+    background: rgba(99,102,241,0.06) !important;
+  }
+  .stCheckbox label { color: #94a3b8 !important; }
+  .stSelectbox [data-baseweb="select"] > div {
+    background: rgba(15,20,35,0.8) !important;
+    border: 1px solid rgba(99,102,241,0.2) !important;
+    border-radius: 12px !important; color: #e2e8f0 !important;
+  }
+
+  /* ── Tabs ────────────────────────────────────────────── */
+  .stTabs [data-baseweb="tab-list"] {
+    gap:4px; border-bottom: 1px solid rgba(99,102,241,0.15);
+    background:transparent; padding-bottom:4px;
+  }
+  .stTabs [data-baseweb="tab"] {
+    background:transparent; border:none; color:#64748b;
+    font-weight:600; font-size:0.9rem; padding:8px 18px;
+    border-radius:8px; transition:all 0.2s ease;
+  }
+  .stTabs [data-baseweb="tab"]:hover {
+    color:#cbd5e1; background:rgba(99,102,241,0.08);
+  }
+  .stTabs [aria-selected="true"] {
+    background:rgba(99,102,241,0.15) !important;
+    color:#a5b4fc !important;
+    border-bottom:2px solid #6366f1 !important;
+    font-weight:700 !important;
+  }
+
+  /* ── Metrics ─────────────────────────────────────────── */
+  [data-testid="stMetric"] {
+    background: rgba(15,20,35,0.7) !important;
+    border: 1px solid rgba(99,102,241,0.15) !important;
+    border-radius:14px !important; padding:16px 20px !important;
+    backdrop-filter:blur(8px) !important;
+  }
+  [data-testid="stMetricValue"] {
+    color:#e2e8f0 !important; font-weight:700 !important;
+    font-family:'Space Grotesk',sans-serif !important;
+  }
+  [data-testid="stMetricLabel"] {
+    color:#64748b !important; font-weight:600 !important; font-size:0.82rem !important;
+  }
+
+  /* ── Score Cards ─────────────────────────────────────── */
+  .score-card {
+    text-align:center; padding:22px 18px;
+    background:rgba(15,20,35,0.8);
+    border:1px solid rgba(99,102,241,0.15);
+    border-radius:16px; backdrop-filter:blur(8px);
+    transition:all 0.3s ease; position:relative; overflow:hidden;
+  }
+  .score-card::before {
+    content:''; position:absolute; top:0;left:0;right:0; height:3px;
+    background:linear-gradient(90deg, #6366f1, #a855f7);
+    border-radius:16px 16px 0 0;
+  }
+  .score-card:hover {
+    border-color:rgba(99,102,241,0.3); transform:translateY(-2px);
+    box-shadow:0 12px 32px rgba(0,0,0,0.4);
+  }
+  .score-val {
+    font-family:'Space Grotesk',sans-serif;
+    font-size:2.8rem; font-weight:800; line-height:1; letter-spacing:-0.05em;
+  }
+  .score-lbl {
+    font-size:0.75rem; color:#64748b; margin-top:7px;
+    font-weight:600; text-transform:uppercase; letter-spacing:0.8px;
+  }
+  .col-green { color:#34d399; }
+  .col-yellow { color:#fbbf24; }
+  .col-red { color:#f87171; }
+  .col-blue { color:#60a5fa; }
+  .col-purple { color:#c084fc; }
+
+  /* ── Skill Badges ────────────────────────────────────── */
+  .skill-badge {
+    display:inline-flex; align-items:center;
+    background:rgba(99,102,241,0.12);
+    border:1px solid rgba(99,102,241,0.25);
+    color:#a5b4fc; padding:4px 13px; border-radius:9999px;
+    margin:3px; font-size:0.82rem; font-weight:500;
+    transition:all 0.2s ease;
+  }
+  .skill-badge:hover { background:rgba(99,102,241,0.22); }
+  .skill-badge-red {
+    background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2);
+    color:#fca5a5; padding:4px 13px; border-radius:9999px;
+    margin:3px; font-size:0.82rem; font-weight:500; display:inline-flex;
+  }
+  .skill-badge-green {
+    background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.25);
+    color:#6ee7b7; padding:4px 13px; border-radius:9999px;
+    margin:3px; font-size:0.82rem; font-weight:500; display:inline-flex;
+  }
+  .skill-badge-yellow {
+    background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.2);
+    color:#fcd34d; padding:4px 13px; border-radius:9999px;
+    margin:3px; font-size:0.82rem; font-weight:500; display:inline-flex;
+  }
+
+  /* ── Roadmap ─────────────────────────────────────────── */
+  .roadmap-card {
+    background:rgba(15,20,35,0.7);
+    border-left:3px solid #6366f1;
+    border-radius:0 12px 12px 0; padding:16px 20px; margin:10px 0;
+    border-top:1px solid rgba(99,102,241,0.1);
+    border-right:1px solid rgba(99,102,241,0.1);
+    border-bottom:1px solid rgba(99,102,241,0.1);
+    transition:all 0.2s ease;
+  }
+  .roadmap-card:hover { transform:translateX(4px); }
+  .roadmap-beginner { border-left-color:#34d399; }
+  .roadmap-intermediate { border-left-color:#6366f1; }
+  .roadmap-advanced { border-left-color:#a855f7; }
+
+  /* ── Mode Badges ─────────────────────────────────────── */
+  .mode-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:5px 14px; border-radius:9999px;
+    font-weight:700; font-size:0.75rem; letter-spacing:0.8px;
+    text-transform:uppercase; margin:10px 0;
+  }
+  .mode-full { background:rgba(99,102,241,0.15); color:#a5b4fc; border:1px solid rgba(99,102,241,0.3); }
+  .mode-partial { background:rgba(245,158,11,0.12); color:#fcd34d; border:1px solid rgba(245,158,11,0.25); }
+  .mode-guidance { background:rgba(100,116,139,0.15); color:#94a3b8; border:1px solid rgba(100,116,139,0.25); }
+
+  /* ── Progress ────────────────────────────────────────── */
+  .stProgress > div > div > div > div {
+    background: linear-gradient(90deg, #6366f1, #a855f7) !important;
+    border-radius:9999px !important;
+  }
+  .stProgress > div > div > div {
+    background:rgba(99,102,241,0.1) !important; border-radius:9999px !important;
+  }
+
+  /* ── Empty States ────────────────────────────────────── */
+  .empty-state { text-align:center; padding:48px 24px; }
+  .empty-state-icon { font-size:3rem; margin-bottom:12px; opacity:0.4; }
+  .empty-state-text { font-size:0.93rem; color:#475569; max-width:360px; margin:0 auto; line-height:1.6; }
+
+  /* ── Architecture cards ───────────────────────────────── */
+  .arch-card {
+    background:rgba(15,20,35,0.7);
+    border:1px solid rgba(99,102,241,0.12);
+    border-radius:14px; padding:18px 22px; margin:10px 0;
+    transition:all 0.25s ease; position:relative; overflow:hidden;
+  }
+  .arch-card:hover {
+    border-color:rgba(99,102,241,0.3);
+    transform:translateX(4px);
+    box-shadow:0 4px 24px rgba(0,0,0,0.3);
+  }
+  .arch-card-accent {
+    position:absolute; left:0; top:0; bottom:0; width:4px;
+    border-radius:14px 0 0 14px;
+  }
+
+  /* ── Sidebar section labels ──────────────────────────── */
+  .sidebar-section-title {
+    font-family:'Space Grotesk',sans-serif;
+    font-size:0.72rem; font-weight:700; color:#6366f1;
+    letter-spacing:1.2px; text-transform:uppercase;
+    margin:18px 0 10px 0; padding-bottom:6px;
+    border-bottom:1px solid rgba(99,102,241,0.15);
+  }
+
+  /* ── Scrollbar ───────────────────────────────────────── */
+  ::-webkit-scrollbar { width:6px; height:6px; }
+  ::-webkit-scrollbar-track { background:#0d1117; }
+  ::-webkit-scrollbar-thumb { background:rgba(99,102,241,0.3); border-radius:4px; }
+  ::-webkit-scrollbar-thumb:hover { background:rgba(99,102,241,0.5); }
+
+  hr { border-color:rgba(99,102,241,0.1) !important; }
+  .stDataFrame { border:1px solid rgba(99,102,241,0.15) !important; border-radius:12px !important; overflow:hidden; }
+
+
+  /* Sidebar styling */
+  section[data-testid="stSidebar"] {
+    background: #ffffff !important;
+    border-right: 1px solid #ebe6f2 !important;
+  }
+  section[data-testid="stSidebar"] h1,
+  section[data-testid="stSidebar"] h2,
+  section[data-testid="stSidebar"] h3,
+  section[data-testid="stSidebar"] h4 {
+    color: #17151e !important;
     font-weight: 700;
   }
   section[data-testid="stSidebar"] p, section[data-testid="stSidebar"] label {
-    color: #94a3b8 !important;
+    color: #5d5966 !important;
   }
 
   /* Typography */
   h1, h2, h3, h4 {
     font-family: 'Plus Jakarta Sans', sans-serif !important;
-    letter-spacing: -0.02em;
-    color: #ffffff;
+    letter-spacing: -0.025em;
+    color: #17151e;
   }
   
   .main p, .main span, .main div {
-    color: #cbd5e1;
+    color: #3e3848;
   }
 
-  /* Hero Banner */
-  .hero-container {
-    text-align: center;
-    padding: 2rem 1rem 1rem 1rem;
-    margin-bottom: 1rem;
-  }
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(99, 102, 241, 0.12);
-    border: 1px solid rgba(99, 102, 241, 0.35);
-    color: #a5b4fc;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 6px 16px;
-    border-radius: 9999px;
-    margin-bottom: 1.2rem;
-    box-shadow: 0 0 24px rgba(99, 102, 241, 0.2);
-  }
-  .hero-title {
-    font-size: 3.2rem !important;
-    font-weight: 800 !important;
-    letter-spacing: -1.5px !important;
-    line-height: 1.15 !important;
-    background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 50%, #e0e7ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.8rem !important;
-  }
-  .hero-subtitle {
-    color: #94a3b8 !important;
-    font-size: 1.15rem !important;
-    max-width: 780px;
-    margin: 0 auto !important;
-    line-height: 1.6 !important;
-    font-weight: 400;
-  }
-
-  /* Status Bar */
-  .status-bar {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    background: rgba(15, 23, 42, 0.65);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 9999px;
-    padding: 10px 24px;
-    margin: 1.5rem auto 2.5rem auto;
-    max-width: 950px;
-    flex-wrap: wrap;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  }
-  .status-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.82rem;
-    color: #cbd5e1;
-    font-weight: 500;
-    letter-spacing: 0.2px;
-  }
-  .status-dot-active {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #10b981;
-    box-shadow: 0 0 10px #10b981;
-    animation: pulse-green 2s infinite ease-in-out;
-  }
-  @keyframes pulse-green {
-    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 10px #10b981; }
-    50% { opacity: 0.5; transform: scale(0.85); box-shadow: 0 0 3px #10b981; }
-  }
-
-  /* Glass Cards */
-  .glass-card {
-    background: rgba(17, 24, 39, 0.75);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 24px;
-    margin: 14px 0;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .glass-card:hover {
-    border-color: rgba(99, 102, 241, 0.35);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.15);
-    transform: translateY(-2px);
-  }
-
-  /* Mode badge */
-  .mode-badge {
-    display: inline-block;
-    padding: 6px 16px;
-    border-radius: 9999px;
-    font-weight: 700;
-    font-size: 0.82rem;
-    letter-spacing: 0.8px;
-    margin: 8px 0;
-    text-transform: uppercase;
-  }
-  .mode-full {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.25));
-    color: #c7d2fe;
-    border: 1px solid rgba(99, 102, 241, 0.4);
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
-  }
-  .mode-partial {
-    background: rgba(234, 179, 8, 0.15);
-    color: #fde047;
-    border: 1px solid rgba(234, 179, 8, 0.35);
-  }
-  .mode-guidance {
-    background: rgba(148, 163, 184, 0.15);
-    color: #cbd5e1;
-    border: 1px solid rgba(148, 163, 184, 0.3);
-  }
-
-  /* Score Gauge Cards */
-  .score-gauge {
-    text-align: center;
-    padding: 16px;
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    transition: all 0.25s ease;
-  }
-  .score-gauge:hover {
-    border-color: rgba(99, 102, 241, 0.3);
-    transform: translateY(-2px);
-  }
-  .score-value {
-    font-size: 2.8rem;
-    font-weight: 800;
-    line-height: 1;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .score-label {
-    font-size: 0.82rem;
-    color: #94a3b8;
-    margin-top: 6px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  /* Dynamic Score Colors */
-  .score-green {
-    color: #34d399 !important;
-    text-shadow: 0 0 16px rgba(52, 211, 153, 0.45);
-  }
-  .score-yellow {
-    color: #fbbf24 !important;
-    text-shadow: 0 0 16px rgba(251, 191, 36, 0.45);
-  }
-  .score-red {
-    color: #f87171 !important;
-    text-shadow: 0 0 16px rgba(248, 113, 113, 0.45);
-  }
-
-  /* Roadmap steps */
-  .roadmap-step {
-    background: rgba(17, 24, 39, 0.7);
-    border-left: 4px solid #6366f1;
-    border-radius: 0 10px 10px 0;
-    padding: 18px 22px;
-    margin: 10px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    transition: all 0.2s ease;
-  }
-  .roadmap-step:hover {
-    background: rgba(17, 24, 39, 0.9);
-    transform: translateX(4px);
-  }
-  .roadmap-beginner { border-left-color: #10b981; }
-  .roadmap-intermediate { border-left-color: #6366f1; }
-  .roadmap-advanced { border-left-color: #a855f7; }
-
-  /* Metric cards override */
-  [data-testid="stMetric"] {
-    background: rgba(17, 24, 39, 0.75) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-radius: 12px !important;
-    padding: 16px 20px !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
-  }
-  [data-testid="stMetricValue"] {
-    color: #f8fafc !important;
-    font-weight: 700 !important;
-  }
-  [data-testid="stMetricLabel"] {
-    color: #94a3b8 !important;
-    font-weight: 600 !important;
-    font-size: 0.85rem !important;
-  }
-
-  /* Tab styling */
-  .stTabs [data-baseweb="tab-list"] {
-    gap: 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 4px;
-  }
-  .stTabs [data-baseweb="tab"] {
-    background: transparent;
-    border: none;
-    color: #94a3b8;
-    font-weight: 600;
-    font-size: 0.95rem;
-    padding: 10px 18px;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-  }
-  .stTabs [data-baseweb="tab"]:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.04);
-  }
-  .stTabs [aria-selected="true"] {
-    background: rgba(99, 102, 241, 0.15) !important;
-    color: #a5b4fc !important;
-    border-bottom: 2px solid #6366f1 !important;
-  }
-
-  /* Primary Button Styling */
-  div.stButton > button[kind="primary"],
-  div.stButton > button {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #9333ea 100%) !important;
-    color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    font-weight: 700 !important;
-    font-size: 1.1rem !important;
-    border-radius: 12px !important;
-    padding: 0.85rem 2rem !important;
-    box-shadow: 0 0 25px rgba(124, 58, 237, 0.4), 0 4px 10px rgba(0, 0, 0, 0.3) !important;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  }
-  div.stButton > button:hover {
-    transform: translateY(-2px) scale(1.01) !important;
-    box-shadow: 0 0 35px rgba(124, 58, 237, 0.65), 0 8px 20px rgba(0, 0, 0, 0.4) !important;
-    border-color: rgba(255, 255, 255, 0.3) !important;
-  }
-
-  /* Input fields */
-  .stTextInput input, .stTextArea textarea {
-    background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: 10px !important;
-    color: #f8fafc !important;
-    transition: all 0.2s ease !important;
-  }
-  .stTextInput input:focus, .stTextArea textarea:focus {
-    border-color: #818cf8 !important;
-    box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.25) !important;
-    background: rgba(15, 23, 42, 0.8) !important;
-  }
-  [data-testid="stFileUploaderDropzone"] {
-    background: rgba(15, 23, 42, 0.45) !important;
-    border: 2px dashed rgba(255, 255, 255, 0.15) !important;
-    border-radius: 12px !important;
-    transition: all 0.25s ease !important;
-  }
-  [data-testid="stFileUploaderDropzone"]:hover {
-    border-color: #818cf8 !important;
-    background: rgba(99, 102, 241, 0.08) !important;
-  }
-  
-  /* Sticky Glass Navbar */
+  /* Sticky Medihealth Navbar */
   .mossga-navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(13, 19, 34, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    padding: 12px 24px;
-    margin: -1.5rem 0 1.2rem 0;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-    position: relative;
-    z-index: 99;
+    background: #ffffff;
+    border: 1px solid #ebe6f2;
+    border-radius: 9999px;
+    padding: 10px 24px;
+    margin: -1.2rem 0 1.5rem 0;
+    box-shadow: 0 2px 14px rgba(107, 85, 128, 0.05);
   }
   .nav-brand {
     display: flex;
     align-items: center;
     gap: 12px;
   }
-  .brand-logo {
-    font-size: 1.8rem;
-    line-height: 1;
-    filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.6));
-  }
-  .brand-info {
+  .brand-logo-mark {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #735384 0%, #9b7fa8 100%);
+    border-radius: 8px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.95rem;
   }
   .brand-name {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 800;
     letter-spacing: -0.5px;
-    color: #ffffff;
+    color: #17151e;
     display: flex;
     align-items: center;
     gap: 8px;
   }
   .brand-badge {
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-    color: #ffffff;
-    font-size: 0.65rem;
+    background: #f1ecf7;
+    color: #6a4878;
+    font-size: 0.68rem;
     font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 6px;
+    padding: 3px 8px;
+    border-radius: 9999px;
+    border: 1px solid #e2d8eb;
     letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .brand-sub {
-    font-size: 0.78rem;
-    color: #94a3b8;
-    font-weight: 500;
   }
   .nav-right {
     display: flex;
@@ -421,86 +552,351 @@ st.markdown("""
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.25);
-    color: #6ee7b7;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
     font-size: 0.78rem;
     font-weight: 600;
-    padding: 6px 14px;
+    padding: 5px 14px;
     border-radius: 9999px;
+  }
+  .status-dot-active {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #16a34a;
   }
   .nav-gh-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #f1f5f9 !important;
+    gap: 6px;
+    background: #f5f1fa;
+    border: 1px solid #e3d7ec;
+    color: #553c63 !important;
     text-decoration: none !important;
     font-size: 0.82rem;
     font-weight: 600;
-    padding: 7px 16px;
+    padding: 6px 16px;
     border-radius: 9999px;
     transition: all 0.2s ease;
   }
   .nav-gh-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.25);
-    color: #ffffff !important;
-    transform: translateY(-1px);
+    background: #ebe3f4;
+    color: #3b2847 !important;
   }
 
-  /* Segmented Nav Pill Styling */
+  /* Segmented Nav Pill Styling (Medihealth style) */
   div[data-testid="stRadio"] {
     display: flex;
     justify-content: center;
-    margin: 0.5rem auto 1.5rem auto;
+    margin: 0.5rem auto 1.8rem auto;
   }
   div[data-testid="stRadio"] > div {
-    background: rgba(15, 23, 42, 0.75) !important;
-    backdrop-filter: blur(16px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: #f1ecf7 !important;
+    border: 1px solid #e2d8eb !important;
     border-radius: 9999px !important;
-    padding: 6px 10px !important;
-    gap: 6px !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    padding: 4px 6px !important;
+    gap: 4px !important;
     flex-direction: row !important;
     justify-content: center !important;
-    max-width: 860px !important;
+    max-width: 820px !important;
     width: auto !important;
   }
   div[data-testid="stRadio"] label {
     background: transparent !important;
     border-radius: 9999px !important;
-    padding: 7px 18px !important;
+    padding: 7px 20px !important;
     margin: 0 !important;
     font-weight: 600 !important;
     font-size: 0.88rem !important;
     cursor: pointer !important;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    color: #94a3b8 !important;
-    border: 1px solid transparent !important;
+    transition: all 0.2s ease !important;
+    color: #6d6778 !important;
+    border: none !important;
   }
   div[data-testid="stRadio"] label:hover {
-    color: #ffffff !important;
-    background: rgba(255, 255, 255, 0.05) !important;
+    color: #17151e !important;
   }
   div[data-testid="stRadio"] label:has(input:checked) {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3)) !important;
-    color: #c7d2fe !important;
-    border: 1px solid rgba(99, 102, 241, 0.5) !important;
-    box-shadow: 0 0 16px rgba(99, 102, 241, 0.3) !important;
+    background: #ffffff !important;
+    color: #17151e !important;
+    box-shadow: 0 2px 8px rgba(100, 80, 120, 0.08) !important;
+    font-weight: 700 !important;
   }
   div[data-testid="stRadio"] label div[data-testid="stMarkdownContainer"] p {
     color: inherit !important;
-    font-weight: 600 !important;
+    font-weight: inherit !important;
     margin: 0 !important;
   }
   div[data-testid="stRadio"] input[type="radio"] {
     display: none !important;
   }
+
+  /* Cards */
+  .glass-card {
+    background: #ffffff;
+    border: 1px solid #ebe6f2;
+    border-radius: 18px;
+    padding: 24px;
+    margin: 14px 0;
+    box-shadow: 0 4px 20px -2px rgba(107, 85, 128, 0.05);
+    transition: all 0.2s ease;
+  }
+  .glass-card:hover {
+    box-shadow: 0 8px 24px -2px rgba(107, 85, 128, 0.09);
+    border-color: #ded6e6;
+  }
+
+  /* Medihealth Hero Header */
+  .hero-container {
+    padding: 1.5rem 0 1rem 0;
+    margin-bottom: 1.2rem;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f1ecf7;
+    border: 1px solid #e2d8eb;
+    color: #6a4878;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    margin-bottom: 1rem;
+  }
+  .hero-title {
+    font-size: 2.85rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.18 !important;
+    color: #17151e !important;
+    margin-bottom: 0.8rem !important;
+  }
+  .hero-subtitle {
+    color: #5d5966 !important;
+    font-size: 1.1rem !important;
+    max-width: 720px;
+    line-height: 1.6 !important;
+    font-weight: 400;
+  }
+
+  /* Medihealth Side Stats Container */
+  .stat-badge-box {
+    background: #f5f1fa;
+    border: 1px solid #e3d7ec;
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .stat-badge-num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #735384;
+    letter-spacing: -0.5px;
+  }
+  .stat-badge-txt {
+    font-size: 0.82rem;
+    color: #5d5966;
+    font-weight: 600;
+  }
+
+  /* Primary Button (Plum pill) */
+  div.stButton > button[kind="primary"],
+  div.stButton > button {
+    background: #735384 !important;
+    color: #ffffff !important;
+    border: none !important;
+    font-weight: 600 !important;
+    font-size: 0.96rem !important;
+    border-radius: 9999px !important;
+    padding: 0.75rem 2.2rem !important;
+    box-shadow: 0 4px 14px rgba(115, 83, 132, 0.22) !important;
+    transition: all 0.2s ease !important;
+  }
+  div.stButton > button:hover {
+    background: #5d406b !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 18px rgba(115, 83, 132, 0.32) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  /* Form Inputs */
+  .stTextInput input, .stTextArea textarea {
+    background: #ffffff !important;
+    border: 1px solid #dfd8e7 !important;
+    border-radius: 12px !important;
+    color: #17151e !important;
+    transition: all 0.2s ease !important;
+  }
+  .stTextInput input:focus, .stTextArea textarea:focus {
+    border-color: #8c6a99 !important;
+    box-shadow: 0 0 0 3px rgba(140, 106, 153, 0.15) !important;
+  }
+  [data-testid="stFileUploaderDropzone"] {
+    background: #faf8fd !important;
+    border: 2px dashed #dcd4e4 !important;
+    border-radius: 14px !important;
+    transition: all 0.2s ease !important;
+  }
+  [data-testid="stFileUploaderDropzone"]:hover {
+    border-color: #8c6a99 !important;
+    background: #f5f0fa !important;
+  }
+  .stTextInput label, .stTextArea label, [data-testid="stFileUploaderDropzone"] label {
+    color: #2e2836 !important;
+    font-weight: 600 !important;
+  }
+
+  /* Tab styling */
+  .stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    border-bottom: 1px solid #ebe6f2;
+    padding-bottom: 4px;
+  }
+  .stTabs [data-baseweb="tab"] {
+    background: transparent;
+    border: none;
+    color: #6d6778;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+  .stTabs [data-baseweb="tab"]:hover {
+    color: #17151e;
+  }
+  .stTabs [aria-selected="true"] {
+    background: #f1ecf7 !important;
+    color: #6a4878 !important;
+    border-bottom: 2px solid #735384 !important;
+    font-weight: 700 !important;
+  }
+
+  /* Metric cards */
+  [data-testid="stMetric"] {
+    background: #ffffff !important;
+    border: 1px solid #ebe6f2 !important;
+    border-radius: 14px !important;
+    padding: 16px 20px !important;
+    box-shadow: 0 2px 10px rgba(107, 85, 128, 0.04) !important;
+  }
+  [data-testid="stMetricValue"] {
+    color: #17151e !important;
+    font-weight: 700 !important;
+  }
+  [data-testid="stMetricLabel"] {
+    color: #6d6778 !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Score Gauges */
+  .score-gauge {
+    text-align: center;
+    padding: 16px;
+    background: #ffffff;
+    border: 1px solid #ebe6f2;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(107, 85, 128, 0.04);
+  }
+  .score-value {
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .score-label {
+    font-size: 0.8rem;
+    color: #6d6778;
+    margin-top: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .score-green { color: #059669 !important; }
+  .score-yellow { color: #d97706 !important; }
+  .score-red { color: #dc2626 !important; }
+
+  /* Mode badge */
+  .mode-badge {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    margin: 8px 0;
+  }
+  .mode-full {
+    background: #f1ecf7;
+    color: #6a4878;
+    border: 1px solid #e2d8eb;
+  }
+  .mode-partial {
+    background: #fefce8;
+    color: #a16207;
+    border: 1px solid #fef08a;
+  }
+  .mode-guidance {
+    background: #f3f4f6;
+    color: #4b5563;
+    border: 1px solid #e5e7eb;
+  }
+
+  /* Roadmap steps */
+  .roadmap-step {
+    background: #ffffff;
+    border-left: 4px solid #735384;
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin: 10px 0;
+    border-top: 1px solid #ebe6f2;
+    border-right: 1px solid #ebe6f2;
+    border-bottom: 1px solid #ebe6f2;
+  }
+  .roadmap-beginner { border-left-color: #059669; }
+  .roadmap-intermediate { border-left-color: #735384; }
+  .roadmap-advanced { border-left-color: #9b7fa8; }
 </style>
 """, unsafe_allow_html=True)
+
+
+# ---------------------------------------------------------------------------
+# Plotly Dark Layout Helper
+# ---------------------------------------------------------------------------
+
+def plotly_dark_layout(fig, height=380, title=None):
+    """Apply consistent dark theme to all Plotly charts."""
+    updates = dict(
+        template="plotly_dark",
+        height=height,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(10,12,20,0.6)',
+        font=dict(family='Inter, sans-serif', color='#94a3b8', size=12),
+        margin=dict(l=24, r=24, t=48 if title else 28, b=28),
+    )
+    if title:
+        updates['title'] = dict(text=title, font=dict(color='#e2e8f0', size=14, family='Space Grotesk'), x=0.02)
+    fig.update_layout(**updates)
+    fig.update_xaxes(
+        gridcolor='rgba(99,102,241,0.08)',
+        linecolor='rgba(99,102,241,0.15)',
+        tickfont=dict(color='#64748b'),
+    )
+    fig.update_yaxes(
+        gridcolor='rgba(99,102,241,0.08)',
+        linecolor='rgba(99,102,241,0.15)',
+        tickfont=dict(color='#64748b'),
+    )
+    return fig
+
 
 
 # ---------------------------------------------------------------------------
@@ -512,12 +908,12 @@ def score_color(val):
   try:
     v = float(val)
   except (ValueError, TypeError):
-    return "score-yellow"
+    return "col-yellow"
   if v >= 70:
-    return "score-green"
+    return "col-green"
   elif v >= 40:
-    return "score-yellow"
-  return "score-red"
+    return "col-yellow"
+  return "col-red"
 
 
 # ---------------------------------------------------------------------------
@@ -540,15 +936,15 @@ if "github_input_val" not in st.session_state:
 
 with st.sidebar:
   st.markdown("""
-  <div style="text-align: center; padding: 6px 0 16px 0; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 16px;">
-    <div style="font-size: 2.3rem; line-height: 1.2; filter: drop-shadow(0 0 12px rgba(99,102,241,0.5));">🎯</div>
-    <h3 style="margin: 6px 0 2px 0; color: #ffffff; font-weight: 800; font-size: 1.25rem;">MoSSGA Pro</h3>
-    <span style="font-size: 0.72rem; color: #818cf8; letter-spacing: 1px; font-weight: 700; text-transform: uppercase;">Talent Intelligence Platform</span>
+  <div style="text-align:center; padding:8px 0 20px 0; border-bottom:1px solid rgba(99,102,241,0.15); margin-bottom:16px;">
+    <div style="font-size:2.4rem; filter:drop-shadow(0 0 18px rgba(99,102,241,0.6));">🎯</div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:800;color:#f1f5f9;letter-spacing:-0.03em;margin-top:6px;">MoSSGA Pro</div>
+    <div style="font-size:0.7rem;color:#6366f1;letter-spacing:1.2px;font-weight:700;text-transform:uppercase;">Talent Intelligence Platform</div>
   </div>
   """, unsafe_allow_html=True)
 
-  st.markdown("#### ⚡ 1-Click Demo Profiles")
-  st.caption("Instantly test the multi-modal pipeline:")
+  st.markdown('<div class="sidebar-section-title">⚡ 1-Click Demo Profiles</div>', unsafe_allow_html=True)
+  st.caption("Instantly populate all fields:")
 
   col_p1, col_p2 = st.columns(2)
   with col_p1:
@@ -573,21 +969,19 @@ with st.sidebar:
     st.session_state.jd_input_val = "Data Scientist required with strong foundation in Python, SQL, Pandas, Statistics, Machine Learning, and Data Visualization."
     st.rerun()
 
-  st.markdown("---")
-  st.markdown("#### ⚙️ Engine Parameters")
+  st.markdown('<div class="sidebar-section-title">⚙️ Engine Parameters</div>', unsafe_allow_html=True)
   semantic_threshold = st.slider("Semantic Match Threshold", min_value=0.50, max_value=0.95, value=0.65, step=0.05)
   resume_weight = st.slider("Resume Evidence Weight", min_value=0.1, max_value=0.9, value=0.6, step=0.1)
   st.caption(f"GitHub Practical Weight: **{1.0 - resume_weight:.1f}**")
 
-  st.markdown("---")
-  st.markdown("#### ℹ️ System Specification")
+  st.markdown('<div class="sidebar-section-title">ℹ️ System Specification</div>', unsafe_allow_html=True)
   st.markdown("""
-  <div style="font-size: 0.8rem; color: #94a3b8; line-height: 1.8;">
-    • <b>SBERT:</b> all-MiniLM-L6-v2 (384d)<br/>
-    • <b>Regressor:</b> XGBoost v2.0<br/>
-    • <b>NLP Core:</b> spaCy en_core_web_sm<br/>
-    • <b>Graph:</b> NetworkX DiGraph Engine<br/>
-    • <b>Deployment:</b> Cloud Ready ($PORT)
+  <div style="font-size:0.8rem;color:#475569;line-height:2;">
+    <span style="color:#6366f1;">●</span> <b style="color:#94a3b8;">SBERT:</b> all-MiniLM-L6-v2 (384d)<br>
+    <span style="color:#8b5cf6;">●</span> <b style="color:#94a3b8;">Regressor:</b> XGBoost v2.0<br>
+    <span style="color:#a855f7;">●</span> <b style="color:#94a3b8;">NLP Core:</b> spaCy en_core_web_sm<br>
+    <span style="color:#ec4899;">●</span> <b style="color:#94a3b8;">Graph:</b> NetworkX DiGraph<br>
+    <span style="color:#10b981;">●</span> <b style="color:#94a3b8;">Deploy:</b> Cloud Ready ($PORT)
   </div>
   """, unsafe_allow_html=True)
 
@@ -599,22 +993,22 @@ with st.sidebar:
 st.markdown("""
 <header class="mossga-navbar">
   <div class="nav-brand">
-    <div class="brand-logo">🎯</div>
-    <div class="brand-info">
+    <div class="brand-logo-mark">🎯</div>
+    <div>
       <span class="brand-name">MoSSGA <span class="brand-badge">PRO v2.4</span></span>
       <span class="brand-sub">Multi-Modal Semantic Talent Engine</span>
     </div>
   </div>
   <div class="nav-right">
-    <div class="nav-status-pill">
-      <span class="status-dot-active"></span>
-      <span>All Engines Operational</span>
+    <div class="status-live">
+      <span class="pulse-dot"></span>
+      All Engines Live
     </div>
     <a href="https://github.com/suryanshagrawal21/MoSSGA" target="_blank" class="nav-gh-btn">
-      <svg height="15" width="15" viewBox="0 0 16 16" fill="currentColor">
-        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+      <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
       </svg>
-      <span>GitHub Repo</span>
+      GitHub Repo
     </a>
   </div>
 </header>
@@ -626,13 +1020,8 @@ st.markdown("""
 # ---------------------------------------------------------------------------
 
 selected_nav = st.radio(
-  "Navigation Pattern",
-  [
-    "🎯 Analyzer Dashboard",
-    "🌐 Skill Graph & Ontology",
-    "🧠 Pipeline Architecture",
-    "⚡ System Health & APIs",
-  ],
+  "Navigation",
+  ["🎯 Analyzer", "🌐 Skill Graph", "🧠 Architecture", "⚡ System Health"],
   horizontal=True,
   label_visibility="collapsed",
 )
@@ -852,13 +1241,13 @@ def render_system_health_view():
 # Navigation Dispatcher
 # ---------------------------------------------------------------------------
 
-if selected_nav == "🌐 Skill Graph & Ontology":
+if selected_nav == "🌐 Skill Graph":
   render_skill_graph_view()
   st.stop()
-elif selected_nav == "🧠 Pipeline Architecture":
+elif selected_nav == "🧠 Architecture":
   render_architecture_view()
   st.stop()
-elif selected_nav == "⚡ System Health & APIs":
+elif selected_nav == "⚡ System Health":
   render_system_health_view()
   st.stop()
 
@@ -868,66 +1257,68 @@ elif selected_nav == "⚡ System Health & APIs":
 # ---------------------------------------------------------------------------
 
 st.markdown("""
-<div class="hero-container">
-  <div class="hero-badge">⚡ AI-POWERED TALENT INTELLIGENCE</div>
+<div class="hero-wrap">
+  <div class="hero-chip">⚡ AI-POWERED TALENT INTELLIGENCE</div>
   <h1 class="hero-title">MoSSGA System</h1>
-  <p class="hero-subtitle">Multi-Modal Semantic Skill Gap Analysis · Sentence-BERT Embeddings & Cross-Modal Fusion</p>
+  <p class="hero-sub">Multi-Modal Semantic Skill Gap Analysis using Sentence-BERT Embeddings, Cross-Modal Fusion &amp; Knowledge Graph Reasoning</p>
 </div>
 """, unsafe_allow_html=True)
-
 
 st.markdown("""
 <div class="status-bar">
-  <div class="status-item"><div class="status-dot-active"></div> SBERT Model Active</div>
-  <div class="status-item"><div class="status-dot-active"></div> NLP Pipeline Ready</div>
-  <div class="status-item"><div class="status-dot-active"></div> GitHub Analyzer Active</div>
-  <div class="status-item"><div class="status-dot-active"></div> Fusion Engine Ready</div>
-  <div class="status-item"><div class="status-dot-active"></div> Skill Gap Engine Online</div>
+  <div class="status-pill"><span class="status-dot"></span>SBERT Model Active</div>
+  <div class="status-pill"><span class="status-dot"></span>NLP Pipeline Ready</div>
+  <div class="status-pill"><span class="status-dot"></span>GitHub Analyzer Online</div>
+  <div class="status-pill"><span class="status-dot"></span>Fusion Engine Ready</div>
+  <div class="status-pill"><span class="status-dot"></span>Skill Gap Engine Online</div>
 </div>
 """, unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns(3, gap="medium")
 
 with col1:
-  st.markdown("### 📄 Resume Upload")
+  st.markdown('<div class="input-section-title">📄 Resume Upload</div>', unsafe_allow_html=True)
   uploaded_files = st.file_uploader(
-    "Upload PDF / DOCX resumes", type=["pdf", "docx"], accept_multiple_files=True,
+    "Upload resumes", type=["pdf", "docx"], accept_multiple_files=True,
     label_visibility="collapsed",
   )
   if uploaded_files:
     st.success(f"✓ {len(uploaded_files)} resume(s) loaded")
 
 with col2:
-  st.markdown("### 🐙 GitHub Profile")
+  st.markdown('<div class="input-section-title">🐙 GitHub Profile</div>', unsafe_allow_html=True)
   github_input = st.text_input(
-    "GitHub URL or Username",
+    "GitHub",
     value=st.session_state.github_input_val,
-    placeholder="e.g. https://github.com/username or username"
+    placeholder="username or https://github.com/username",
+    label_visibility="collapsed",
   )
   if github_input:
-    st.success("✓ GitHub profile queued for analysis")
+    st.success("✓ GitHub profile queued")
 
 with col3:
-  st.markdown("### 🎯 Target Profile")
+  st.markdown('<div class="input-section-title">🎯 Target Profile</div>', unsafe_allow_html=True)
   target_role = st.text_input(
     "Target Role",
     value=st.session_state.target_role_val,
-    placeholder="e.g. Machine Learning Engineer"
+    placeholder="e.g. Machine Learning Engineer",
+    label_visibility="collapsed",
   )
   manual_skills = st.text_input(
-    "Your Skills (comma separated)",
+    "Your Skills (comma-separated)",
     value=st.session_state.manual_skills_val,
-    placeholder="e.g. Python, SQL, Docker"
+    placeholder="Python, SQL, Docker, React…",
+    label_visibility="collapsed",
   )
 
 st.markdown("<br>", unsafe_allow_html=True)
-st.markdown("### 📋 Target Job Description")
+st.markdown('<div class="input-section-title">📋 Job Description</div>', unsafe_allow_html=True)
 jd_input = st.text_area(
-  "Paste Target Job Description here", 
+  "JD",
   value=st.session_state.jd_input_val,
-  height=140, 
-  placeholder="Paste a job description to get deep semantic skill gap matching and explainable AI insights...",
-  label_visibility="collapsed"
+  height=130,
+  placeholder="Paste a job description to get deep semantic skill gap matching and explainable AI insights…",
+  label_visibility="collapsed",
 )
 
 st.markdown("<br>", unsafe_allow_html=True)
@@ -1068,72 +1459,65 @@ if run_btn:
     st.markdown("*Overview of extracted features, detected skills, and match scores.*")
 
     # Top metrics
+    mossga_score = mossga_report.get("mossga_score", 0) if mossga_report else 0
+    match_pct = 0
+    if mossga_report and mossga_report.get("semantic_match"):
+      match_pct = mossga_report["semantic_match"].get("match_percentage", 0)
+
     m1, m2, m3, m4 = st.columns(4)
     with m1:
-      mossga_score = mossga_report.get("mossga_score", 0) if mossga_report else 0
-      st.markdown(f"""
-      <div class="score-gauge">
-        <div class="score-value {score_color(mossga_score)}">{mossga_score}</div>
-        <div class="score-label">MoSSGA Hybrid Score</div>
+      st.markdown(f"""<div class="score-card">
+        <div class="score-val {score_color(mossga_score)}">{mossga_score}</div>
+        <div class="score-lbl">MoSSGA Hybrid Score</div>
       </div>""", unsafe_allow_html=True)
     with m2:
-      match_pct = 0
-      if mossga_report and mossga_report.get("semantic_match"):
-        match_pct = mossga_report["semantic_match"].get("match_percentage", 0)
-      st.markdown(f"""
-      <div class="score-gauge">
-        <div class="score-value {score_color(match_pct)}">{match_pct}%</div>
-        <div class="score-label">Semantic Match Rate</div>
+      st.markdown(f"""<div class="score-card">
+        <div class="score-val {score_color(match_pct)}">{match_pct}%</div>
+        <div class="score-lbl">Semantic Match Rate</div>
       </div>""", unsafe_allow_html=True)
     with m3:
-      st.markdown(f"""
-      <div class="score-gauge">
-        <div class="score-value" style="color: #a78bfa;">{level}</div>
-        <div class="score-label">Estimated Level</div>
+      st.markdown(f"""<div class="score-card">
+        <div class="score-val col-purple">{level}</div>
+        <div class="score-lbl">Estimated Level</div>
       </div>""", unsafe_allow_html=True)
     with m4:
-      st.markdown(f"""
-      <div class="score-gauge">
-        <div class="score-value" style="color: #60a5fa;">{len(parsed_skills)}</div>
-        <div class="score-label">Skills Detected</div>
+      st.markdown(f"""<div class="score-card">
+        <div class="score-val col-blue">{len(parsed_skills)}</div>
+        <div class="score-lbl">Skills Detected</div>
       </div>""", unsafe_allow_html=True)
 
     # Skills detected
-    st.markdown("### Skills Detected")
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("### 🏷️ Skills Detected")
     if parsed_skills:
-      skill_html = " ".join(
-        [f'<span style="background:rgba(99,102,241,0.2); color:#a5b4fc; padding:4px 12px; border-radius:20px; margin:3px; display:inline-block; font-size:0.85rem; border:1px solid rgba(99,102,241,0.3);">{s}</span>'
-         for s in parsed_skills]
-      )
-      st.markdown(f'<div style="margin:8px 0;">{skill_html}</div>', unsafe_allow_html=True)
+      badges = "".join([f'<span class="skill-badge">{s}</span>' for s in sorted(parsed_skills)])
+      st.markdown(f'<div style="margin:8px 0;">{badges}</div>', unsafe_allow_html=True)
     else:
-      st.info("No skills detected. Please upload a resume or enter skills manually.")
+      st.markdown('<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-text">No skills detected. Upload a resume or enter skills manually.</div></div>', unsafe_allow_html=True)
 
     # Extracted resume sections
     if mossga_report and mossga_report.get("resume_analysis"):
       ra = mossga_report["resume_analysis"]
+      st.markdown("### 📄 Extracted Resume Sections")
       sec1, sec2, sec3 = st.columns(3)
       with sec1:
-        st.markdown("### Education")
+        st.markdown("**🎓 Education**")
         for e in (ra.get("education") or ["Not detected"]):
-          st.markdown(f"- {e}")
+          st.markdown(f"<span style='color:#94a3b8;font-size:0.88rem;'>• {e}</span>", unsafe_allow_html=True)
       with sec2:
-        st.markdown("### Experience")
+        st.markdown("**💼 Experience**")
         for e in (ra.get("experience") or ["Not detected"])[:5]:
-          st.markdown(f"- {e}")
+          st.markdown(f"<span style='color:#94a3b8;font-size:0.88rem;'>• {e}</span>", unsafe_allow_html=True)
       with sec3:
-        st.markdown("### Projects")
+        st.markdown("**🚀 Projects**")
         for p in (ra.get("projects") or ["Not detected"])[:5]:
-          st.markdown(f"- {p}")
+          st.markdown(f"<span style='color:#94a3b8;font-size:0.88rem;'>• {p}</span>", unsafe_allow_html=True)
 
     # Missing skills
     if missing_skills:
-      st.markdown("### Missing Skills for Target Role")
-      miss_html = " ".join(
-        [f'<span style="background:rgba(239,68,68,0.15); color:#fca5a5; padding:4px 12px; border-radius:20px; margin:3px; display:inline-block; font-size:0.85rem; border:1px solid rgba(239,68,68,0.3);">{s}</span>'
-         for s in missing_skills]
-      )
-      st.markdown(f'<div style="margin:8px 0;">{miss_html}</div>', unsafe_allow_html=True)
+      st.markdown("### ⚠️ Missing Skills for Target Role")
+      badges = "".join([f'<span class="skill-badge-red">{s}</span>' for s in missing_skills])
+      st.markdown(f'<div style="margin:8px 0;">{badges}</div>', unsafe_allow_html=True)
 
     # Similarity scores (if JD provided with resumes)
     if has_resumes and has_jd and resume_text_first:
@@ -1190,17 +1574,11 @@ if run_btn:
           ])
           fig_lang = px.bar(
             lang_df, x="Language", y="Percentage",
-            color="Percentage", color_continuous_scale="Viridis",
-            title="Top Languages by Code Volume",
+            color="Percentage",
+            color_continuous_scale=[[0, "#3b82f6"], [0.5, "#8b5cf6"], [1, "#ec4899"]],
           )
-          fig_lang.update_layout(
-            template="plotly_dark",
-            height=360,
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-            font=dict(family='Plus Jakarta Sans', color='#94a3b8'),
-            margin=dict(l=20, r=20, t=40, b=20),
-          )
+          fig_lang.update_traces(marker_line_width=0)
+          plotly_dark_layout(fig_lang, height=340, title="Top Languages by Code Volume")
           st.plotly_chart(fig_lang, use_container_width=True)
 
         # Skills from GitHub
@@ -1228,20 +1606,20 @@ if run_btn:
           st.markdown("### Top Projects by Complexity")
           for proj in projects[:6]:
             complexity = proj.get("complexity_score", 0)
-            bar_color = '#22c55e' if complexity >= 50 else ('#eab308' if complexity >= 25 else '#94a3b8')
+            bar_color = '#34d399' if complexity >= 50 else ('#fbbf24' if complexity >= 25 else '#64748b')
             st.markdown(f"""
-            <div class="glass-card" style="padding:14px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div class="glass-card" style="padding:14px 18px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
                 <div>
-                  <b style="color:#a5b4fc;">{proj['name']}</b>
-                  <span style="color:#94a3b8; margin-left:8px; font-size:0.85rem;">Stars: {proj.get('stargazers_count', 0)} · Forks: {proj.get('forks_count', 0)}</span>
+                  <b style="color:#a5b4fc;font-size:1rem;">{proj['name']}</b>
+                  <span style="color:#475569;margin-left:10px;font-size:0.82rem;">⭐ {proj.get('stargazers_count',0)} &nbsp;🍴 {proj.get('forks_count',0)}</span>
                 </div>
-                <span style="color:{bar_color}; font-weight:600;">Complexity: {complexity}%</span>
+                <span style="color:{bar_color};font-weight:700;font-size:0.9rem;">{complexity}%</span>
               </div>
-              <div style="background:rgba(0,0,0,0.3); border-radius:8px; height:8px; margin:8px 0;">
-                <div style="background:{bar_color}; width:{complexity}%; height:100%; border-radius:8px;"></div>
+              <div style="background:rgba(99,102,241,0.08);border-radius:9999px;height:6px;margin:6px 0;">
+                <div style="background:{bar_color};width:{complexity}%;height:100%;border-radius:9999px;box-shadow:0 0 8px {bar_color}66;"></div>
               </div>
-              <span style="color:#64748b; font-size:0.85rem;">{proj.get('description', 'No description')[:120]}</span>
+              <span style="color:#475569;font-size:0.83rem;">{(proj.get('description','') or 'No description')[:120]}</span>
             </div>""", unsafe_allow_html=True)
 
       elif gh.get("status") == "no_repos":
@@ -1323,23 +1701,13 @@ if run_btn:
         )
         fig_conf = px.bar(
           conf_df, x="Skill", y="Confidence", color="Source",
-          color_discrete_map={"Both": "#22c55e", "Resume": "#6366f1", "GitHub": "#eab308"},
-          title="Skill Confidence Scores (Multi-Modal)",
+          color_discrete_map={"Both": "#34d399", "Resume": "#6366f1", "GitHub": "#fbbf24"},
         )
-        fig_conf.update_layout(
-          template="plotly_dark",
-          height=400,
-          paper_bgcolor='rgba(0,0,0,0)',
-          plot_bgcolor='rgba(0,0,0,0)',
-          font=dict(family='Plus Jakarta Sans', color='#94a3b8'),
-          margin=dict(l=20, r=20, t=40, b=20),
-        )
+        fig_conf.update_traces(marker_line_width=0)
+        plotly_dark_layout(fig_conf, height=380, title="Skill Confidence Scores (Multi-Modal)")
         st.plotly_chart(fig_conf, use_container_width=True)
     else:
-      st.markdown("""
-      <div class="glass-card">
-        <p style="color:#94a3b8;"> Provide both a resume and GitHub profile to see multi-modal fusion analysis. Single-source analysis is also available.</p>
-      </div>""", unsafe_allow_html=True)
+      st.markdown('<div class="empty-state"><div class="empty-state-icon">🧬</div><div class="empty-state-text">Provide both a resume and GitHub profile to see multi-modal fusion. Single-source analysis is also supported.</div></div>', unsafe_allow_html=True)
 
   # --- TAB 4: MoSSGA Skill Gap ---
   with tab4:
@@ -1356,27 +1724,28 @@ if run_btn:
       gap_score = gap.get("gap_score", 0)
       gap_severity = gap.get("gap_severity", "N/A")
       mossga_score = mossga_report.get("mossga_score", 0)
+      sev_col = 'col-green' if gap_severity == 'Low' else ('col-yellow' if gap_severity == 'Medium' else 'col-red')
 
-      sm1.markdown(f"""
-      <div class="score-gauge">
-        <div class="score-value {score_color(match_pct)}">{match_pct}%</div>
-        <div class="score-label">Semantic Match Rate</div>
-      </div>""", unsafe_allow_html=True)
-      sm2.markdown(f"""
-      <div class="score-gauge">
-        <div class="score-value {score_color(100 - gap_score)}">{gap_score}%</div>
-        <div class="score-label">Skill Gap Score</div>
-      </div>""", unsafe_allow_html=True)
-      sm3.markdown(f"""
-      <div class="score-gauge">
-        <div class="score-value" style="color:{'#22c55e' if gap_severity in ('Low',) else '#eab308' if gap_severity in ('Medium',) else '#ef4444'};">{gap_severity}</div>
-        <div class="score-label">Gap Severity</div>
-      </div>""", unsafe_allow_html=True)
-      sm4.markdown(f"""
-      <div class="score-gauge">
-        <div class="score-value {score_color(mossga_score)}">{mossga_score}</div>
-        <div class="score-label">Hybrid Score</div>
-      </div>""", unsafe_allow_html=True)
+      with sm1:
+        st.markdown(f"""<div class="score-card">
+          <div class="score-val {score_color(match_pct)}">{match_pct}%</div>
+          <div class="score-lbl">Semantic Match Rate</div>
+        </div>""", unsafe_allow_html=True)
+      with sm2:
+        st.markdown(f"""<div class="score-card">
+          <div class="score-val {score_color(100 - gap_score)}">{gap_score}%</div>
+          <div class="score-lbl">Skill Gap Score</div>
+        </div>""", unsafe_allow_html=True)
+      with sm3:
+        st.markdown(f"""<div class="score-card">
+          <div class="score-val {sev_col}">{gap_severity}</div>
+          <div class="score-lbl">Gap Severity</div>
+        </div>""", unsafe_allow_html=True)
+      with sm4:
+        st.markdown(f"""<div class="score-card">
+          <div class="score-val {score_color(mossga_score)}">{mossga_score}</div>
+          <div class="score-lbl">Hybrid Score</div>
+        </div>""", unsafe_allow_html=True)
 
       # Matched skills
       matched_skills = match.get("matched_skills", [])
@@ -1457,22 +1826,13 @@ if run_btn:
           z=sim_matrix,
           x=[s.title() for s in cand_resolved[:20]],
           y=[s.title() for s in jd_resolved[:20]],
-          colorscale='Viridis',
+          colorscale=[[0, "#0a0f1e"], [0.4, "#312e81"], [0.7, "#6366f1"], [1, "#a5b4fc"]],
           text=[[f"{v:.2f}" for v in row] for row in sim_matrix],
           texttemplate="%{text}",
-          textfont=dict(size=9),
+          textfont=dict(size=9, color="#e2e8f0"),
         ))
-        fig_heat.update_layout(
-          template='plotly_dark',
-          height=500,
-          paper_bgcolor='rgba(0,0,0,0)',
-          plot_bgcolor='rgba(0,0,0,0)',
-          font=dict(family='Plus Jakarta Sans', color='#94a3b8'),
-          margin=dict(l=20, r=20, t=50, b=20),
-          title='JD Skills vs Candidate Skills — Semantic Similarity',
-          xaxis_title='Candidate Skills',
-          yaxis_title='JD Required Skills',
-        )
+        plotly_dark_layout(fig_heat, height=480, title="JD Skills vs Candidate Skills — Semantic Similarity")
+        fig_heat.update_layout(xaxis_title="Candidate Skills", yaxis_title="JD Required Skills")
         st.plotly_chart(fig_heat, use_container_width=True)
 
     elif mossga_report and mossga_report.get("fusion_result"):
@@ -1485,10 +1845,7 @@ if run_btn:
         )
         st.markdown(f'<div style="margin:8px 0;">{skill_html}</div>', unsafe_allow_html=True)
     else:
-      st.markdown("""
-      <div class="glass-card">
-        <p style="color:#94a3b8;"> Upload a resume or enter a GitHub profile, plus a job description, to see the MoSSGA semantic skill gap analysis.</p>
-      </div>""", unsafe_allow_html=True)
+      st.markdown('<div class="empty-state"><div class="empty-state-icon">🎯</div><div class="empty-state-text">Upload a resume or enter a GitHub profile, plus a job description, to see the MoSSGA semantic skill gap analysis.</div></div>', unsafe_allow_html=True)
 
   # --- TAB 5: Recommendations ---
   with tab5:
@@ -1542,14 +1899,20 @@ if run_btn:
 
     # Roadmap from career intelligence
     if roadmap:
-      st.markdown("### Learning Roadmap")
+      st.markdown("### 🛤️ Learning Roadmap")
       for step in roadmap:
         level_key = "beginner" if "Beginner" in step["level"] else ("intermediate" if "Intermediate" in step["level"] else "advanced")
+        color_map = {"beginner": "#34d399", "intermediate": "#6366f1", "advanced": "#a855f7"}
+        c = color_map[level_key]
         st.markdown(f"""
-        <div class="roadmap-step roadmap-{level_key}">
-          <b>{step['level']}</b> — {step['focus']}<br/>
-          <span style="color:#94a3b8;"> {step['timeline']} | {', '.join(step['technologies'])}</span><br/>
-          <span style="color:#64748b; font-size:0.8rem;"> {step['resources']}</span>
+        <div class="roadmap-card roadmap-{level_key}">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <b style="color:{c};">{step['level']}</b>
+            <span style="color:#64748b;font-size:0.82rem;">{step['timeline']}</span>
+          </div>
+          <div style="color:#e2e8f0;font-size:0.92rem;margin-bottom:4px;">{step['focus']}</div>
+          <div style="color:#475569;font-size:0.82rem;">📦 {', '.join(step['technologies'])}</div>
+          <div style="color:#334155;font-size:0.8rem;margin-top:4px;">📖 {step['resources']}</div>
         </div>""", unsafe_allow_html=True)
 
     # Job recommendations (when no JD)
@@ -1572,7 +1935,4 @@ if run_btn:
 
     if not mossga_report or not mossga_report.get("recommendations"):
       if not roadmap and not job_recs:
-        st.markdown("""
-        <div class="glass-card">
-          <p style="color:#94a3b8;"> Provide a resume + job description to get personalized recommendations, or enter skills and a target role for general guidance.</p>
-        </div>""", unsafe_allow_html=True)
+        st.markdown('<div class="empty-state"><div class="empty-state-icon">💡</div><div class="empty-state-text">Provide a resume + job description to get personalized recommendations, or enter skills and a target role for general guidance.</div></div>', unsafe_allow_html=True)
